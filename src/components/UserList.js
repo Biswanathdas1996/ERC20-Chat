@@ -23,8 +23,9 @@ export default function BasicModal({ openVendorModal, closeVendorModal }) {
     setStudentData(students);
   }
 
-  const startChat = (addressId) => {
+  const startChat = (name, addressId) => {
     localStorage.setItem("userAddressforChat", addressId);
+    localStorage.setItem("userNameforChat", name);
     history("/chat");
   };
 
@@ -41,7 +42,9 @@ export default function BasicModal({ openVendorModal, closeVendorModal }) {
                     </ListItemAvatar>
                     <ListItemText primary={data?.name} />
                     <ListItemText secondary={data?.addressId} />
-                    <ListItemButton onClick={() => startChat(data?.addressId)}>
+                    <ListItemButton
+                      onClick={() => startChat(data?.name, data?.addressId)}
+                    >
                       <input
                         className="btn btn-default btn-primary"
                         type="submit"

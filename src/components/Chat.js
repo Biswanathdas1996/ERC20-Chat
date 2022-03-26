@@ -13,6 +13,7 @@ import {
 import TransctionModal from "./shared/TransctionModal";
 import * as IPFS from "ipfs-core";
 import DescriptionIcon from "@mui/icons-material/Description";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   cardHolder: {
@@ -36,13 +37,14 @@ const Chat = () => {
   const [account, setAccount] = useState(null);
   const [file, setFile] = useState(null);
   const [amount, setAmount] = useState(null);
+  const [receverAddress, setReceverAddress] = useState(null);
+  const [receverName, setReceverName] = useState(null);
   const messagesEndRef = useRef(null);
+  let history = useNavigate();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const receverAddress = localStorage.getItem("userAddressforChat");
 
   const saveData = async ({ text }) => {
     setStart(true);
@@ -60,19 +62,25 @@ const Chat = () => {
 
   useEffect(() => {
     fetshMessages();
-  }, []);
+    const receverAddress = localStorage.getItem("userAddressforChat");
+    const receverName = localStorage.getItem("userNameforChat");
+    if (!receverAddress) {
+      history("/users");
+      return;
+    }
+    setReceverAddress(receverAddress);
+    setReceverName(receverName);
+  }, [receverAddress]);
 
   async function fetshMessages() {
     const getAllMessages = await _fetch("getAllMessages");
     const account = await _account();
     setAccount(account);
-
     const masgToBeShown = getAllMessages?.filter(
       (data) =>
         (data.sender === account && data.recever === receverAddress) ||
         (data.sender === receverAddress && data.recever === account)
     );
-    console.log("====>", masgToBeShown);
     setMessages(masgToBeShown);
     scrollToBottom();
   }
@@ -183,27 +191,41 @@ const Chat = () => {
             >
               {messages?.map((data, index) => {
                 return (
-                  <Grid
-                    item
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    key={index + "_message"}
-                  >
-                    <Card
+                  <>
+                    <b
                       style={{
-                        padding: 10,
-                        maxWidth: "25rem",
-                        minWidth: "20rem",
-                        marginTop: "10px",
-                        textAlign: "left",
-                        float: data?.sender === account ? "right" : "left",
+                        color: "grey",
+                        marginLeft: "1.5rem",
+                        marginTop: "15px",
                       }}
                     >
-                      {renderMessage(data)}
-                    </Card>
-                  </Grid>
+                      {data?.sender === account ? "" : receverName}
+                    </b>
+
+                    <Grid
+                      item
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      key={index + "_message"}
+                    >
+                      <Card
+                        style={{
+                          padding: 10,
+                          maxWidth: "25rem",
+                          minWidth: "20rem",
+                          PaddingTop: "0px",
+                          textAlign: "left",
+                          float: data?.sender === account ? "right" : "left",
+                          backgroundColor:
+                            data?.sender === account ? "#8080801c" : "white",
+                        }}
+                      >
+                        {renderMessage(data)}
+                      </Card>
+                    </Grid>
+                  </>
                 );
               })}
             </Grid>
