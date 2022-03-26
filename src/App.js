@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "@mui/icons-material/Home";
 import { AppBar, Toolbar, Typography } from "@mui/material";
@@ -7,27 +7,30 @@ import { Link } from "react-router-dom";
 
 import Registration from "./components/Registration";
 import Chat from "./components/Chat";
+import NavigationBar from "./components/NavigationBar";
 import UserList from "./components/UserList";
+import { _fetch, _account } from "./ABI-connect/MessangerABI/connect";
 
 export const AccountContest = React.createContext("light");
 
 const App = () => {
-  const account = 1;
+  const [account, setAccount] = React.useState(null);
+  const [accountBalace, setAccountBalace] = React.useState(null);
+
+  async function fetchUserData() {
+    const account = await _account();
+    const accountBalace = await _fetch("balanceOf", account);
+    setAccountBalace(accountBalace);
+    setAccount(account);
+  }
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
   return (
     <AccountContest.Provider value={account}>
-      <AppBar
-        position="relative"
-        style={{ backgroundColor: "#d25304", color: "#fff" }}
-      >
-        <Toolbar>
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <Home sx={{ mr: 2 }} style={{ color: "#fff" }} />
-          </Link>
-          <Typography variant="h6" color="inherit" noWrap>
-            Web 3.0
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <NavigationBar accountBalace={accountBalace} account={account} />
       <Routes>
         <Route path="/chat" element={<Chat />} />
         <Route path="/register" element={<Registration />} />

@@ -12,6 +12,7 @@ import {
 } from "../ABI-connect/MessangerABI/connect";
 import TransctionModal from "./shared/TransctionModal";
 import * as IPFS from "ipfs-core";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   cardHolder: {
@@ -34,6 +35,7 @@ const Chat = () => {
   const [messages, setMessages] = useState(null);
   const [account, setAccount] = useState(null);
   const [file, setFile] = useState(null);
+  const [amount, setAmount] = useState(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -48,7 +50,9 @@ const Chat = () => {
       "sendMassage",
       receverAddress,
       text,
-      "null"
+      "null",
+      "null",
+      0
     );
     setResponse(responseData);
     fetshMessages();
@@ -61,7 +65,6 @@ const Chat = () => {
   async function fetshMessages() {
     const getAllMessages = await _fetch("getAllMessages");
     const account = await _account();
-    console.log("-----getAllMessages---->", getAllMessages, account);
     setAccount(account);
 
     const masgToBeShown = getAllMessages?.filter(
@@ -69,6 +72,7 @@ const Chat = () => {
         (data.sender === account && data.recever === receverAddress) ||
         (data.sender === receverAddress && data.recever === account)
     );
+    console.log("====>", masgToBeShown);
     setMessages(masgToBeShown);
     scrollToBottom();
   }
@@ -81,6 +85,8 @@ const Chat = () => {
   const onFileUpload = async () => {
     setStart(true);
     console.log(file);
+    console.log(file.type);
+
     const node = await IPFS.create();
     if (node) {
       const results = await node.add(file);
@@ -90,16 +96,70 @@ const Chat = () => {
         "sendMassage",
         receverAddress,
         "null",
-        `https://ipfs.io/ipfs/${results.path}`
+        `https://ipfs.io/ipfs/${results.path}`,
+        file.type,
+        0
       );
       setResponse(responseData);
       fetshMessages();
     }
   };
 
+  const sendAmount = async () => {
+    setStart(true);
+    const responseDataMoney = await _transction(
+      "transfer",
+      receverAddress,
+      amount
+    );
+
+    const responseData = await _transction(
+      "sendMassage",
+      receverAddress,
+      "null",
+      "null",
+      "null",
+      amount
+    );
+    setResponse(responseDataMoney);
+    fetshMessages();
+  };
+
   const modalClose = () => {
     setStart(false);
     setResponse(null);
+  };
+
+  const renderMessage = (data) => {
+    const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+    if (data?.amount !== "0") {
+      return (
+        <>
+          <b style={{ color: "green" }}>Transction: </b> {data?.amount} MTN
+        </>
+      );
+    } else if (data?.text !== "null") {
+      return data?.text;
+    } else {
+      if (!validImageTypes.includes(data?.fileType)) {
+        return (
+          <center>
+            <a href={data?.file} target="_blank" rel="noreferrer">
+              <DescriptionIcon fontSize="large" sx={{ fontSize: 60 }} />
+              <p>{data?.fileType}</p>
+            </a>
+          </center>
+        );
+      } else {
+        return (
+          <center>
+            <a href={data?.file} target="_blank" rel="noreferrer">
+              <img src={data?.file} alt={data?.file} />
+            </a>
+          </center>
+        );
+      }
+    }
   };
   return (
     <>
@@ -123,7 +183,14 @@ const Chat = () => {
             >
               {messages?.map((data, index) => {
                 return (
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Grid
+                    item
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    xs={12}
+                    key={index + "_message"}
+                  >
                     <Card
                       style={{
                         padding: 10,
@@ -134,13 +201,7 @@ const Chat = () => {
                         float: data?.sender === account ? "right" : "left",
                       }}
                     >
-                      {data?.text !== "null" ? (
-                        data?.text
-                      ) : (
-                        <a href={data?.file} target="_blank" rel="noreferrer">
-                          <img src={data?.file} alt={data?.file} />
-                        </a>
-                      )}
+                      {renderMessage(data)}
                     </Card>
                   </Grid>
                 );
@@ -174,7 +235,10 @@ const Chat = () => {
                   >
                     {({ touched, errors, isSubmitting }) => (
                       <Form className="form-inline">
-                        <div className="form-group">
+                        <div
+                          className="form-group"
+                          style={{ marginLeft: 10, marginTop: 10 }}
+                        >
                           <Field
                             type="text"
                             name="text"
@@ -185,12 +249,6 @@ const Chat = () => {
                             }`}
                             style={{ marginRight: 10, padding: 9 }}
                           />
-
-                          {/* <ErrorMessage
-                            component="div"
-                            name="text"
-                            className="invalid-feedback"
-                          /> */}
                         </div>
                         <div className="form-group">
                           <span className="input-group-btn">
@@ -202,9 +260,33 @@ const Chat = () => {
                           </span>
                         </div>
 
-                        <div>
+                        <div style={{ marginLeft: 10, marginTop: 10 }}>
                           <input type="file" onChange={onFileChange} />
-                          <button onClick={onFileUpload}>Upload!</button>
+                          <button
+                            onClick={onFileUpload}
+                            className="btn btn-default btn-primary"
+                          >
+                            Upload!
+                          </button>
+                        </div>
+
+                        <div
+                          style={{ marginLeft: 10, marginTop: 10 }}
+                          className="form-group"
+                        >
+                          <input
+                            type="number"
+                            onChange={(e) => setAmount(e.target.value)}
+                            className={`form-control`}
+                            style={{ marginRight: 10 }}
+                            placeholder="Enter amount"
+                          />
+                          <button
+                            onClick={sendAmount}
+                            className="btn btn-default btn-primary"
+                          >
+                            Send Money
+                          </button>
                         </div>
                       </Form>
                     )}

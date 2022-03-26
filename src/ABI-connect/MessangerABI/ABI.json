@@ -161,6 +161,16 @@
         "internalType": "string",
         "name": "fileLink",
         "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "fileType",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
     "name": "sendMassage",
@@ -350,6 +360,16 @@
             "internalType": "string",
             "name": "file",
             "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "fileType",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
           }
         ],
         "internalType": "struct MyToken.Message[]",
@@ -429,6 +449,16 @@
         "internalType": "string",
         "name": "file",
         "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "fileType",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",

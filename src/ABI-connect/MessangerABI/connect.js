@@ -29,8 +29,14 @@ export const _account = async () => {
   return accounts[0];
 };
 
-export const _fetch = async (service) => {
+export const _fetch = async (service, ...props) => {
   const callService = _.get(contract, ["methods", service]);
-  const data = await callService().call();
+  let data;
+  if (props) {
+    data = await callService(...props).call();
+  } else {
+    data = await callService().call();
+  }
+
   return data;
 };
