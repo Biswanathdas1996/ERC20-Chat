@@ -1,0 +1,36 @@
+import _ from "lodash";
+import Web3 from "web3";
+import ABI from "./ABI.json";
+import ADDRESS from "./Address.json";
+
+window.ethereum.request({ method: "eth_requestAccounts" });
+const web3 = new Web3(window.ethereum);
+
+const contract = new web3.eth.Contract(ABI, ADDRESS);
+console.log(contract);
+export const _transction = async (service, ...props) => {
+  const callService = _.get(contract, ["methods", service]);
+  const accounts = await web3.eth.getAccounts();
+  const responseData = await callService(...props)
+    .send({
+      from: accounts[0],
+      value: 0,
+    })
+    .then((data) => data)
+    .catch((error) => {
+      const errorData = { error };
+      return { error: errorData.error };
+    });
+  return responseData;
+};
+
+export const _account = async () => {
+  const accounts = await web3.eth.getAccounts();
+  return accounts[0];
+};
+
+export const _fetch = async (service) => {
+  const callService = _.get(contract, ["methods", service]);
+  const data = await callService().call();
+  return data;
+};
