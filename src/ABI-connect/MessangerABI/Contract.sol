@@ -8,6 +8,7 @@ contract MyToken is ERC20 {
         string name;
         address addressId;
     }
+
     struct Message {
         uint slNo;
         address sender;
@@ -19,15 +20,26 @@ contract MyToken is ERC20 {
         uint amount;                  
     }
 
+    struct Posts {
+        uint slNo;
+        address sender;
+        string text; 
+        bool status;
+        string file;                  
+        string fileType;                 
+    }
+
+
+
     address public admin;
     mapping(address => uint) uniqueAddress;
     User[] public users;
     Message[] public messages;
+    Posts[] public posts;
 
     constructor() ERC20("My Token", "MTN") {
         _mint(msg.sender, 1000 * 10 ** 18);
         admin = msg.sender;
-
     }  
 
     function register( string memory name) public  {
@@ -59,6 +71,20 @@ contract MyToken is ERC20 {
         messages.push(newMessage);
     }
 
+
+
+    function postStory(string memory text, string memory fileLink, string memory fileType) public {
+         Posts memory newPosts = Posts({
+            slNo:posts.length,
+            sender : msg.sender,
+            text:text,
+            status:true,
+            file:fileLink,
+            fileType:fileType
+        });
+        posts.push(newPosts);
+    }
+
                   
                      
         
@@ -70,6 +96,10 @@ contract MyToken is ERC20 {
 
     function getAllUsers() public view returns (User[] memory) {
         return  users;
+    }
+
+    function getAllposts() public view returns (Posts[] memory) {
+        return  posts;
     }
 
 
