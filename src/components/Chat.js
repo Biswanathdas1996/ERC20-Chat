@@ -14,6 +14,7 @@ import TransctionModal from "./shared/TransctionModal";
 import * as IPFS from "ipfs-core";
 import DescriptionIcon from "@mui/icons-material/Description";
 import { useNavigate } from "react-router-dom";
+import ReactPlayer from "react-player";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   cardHolder: {
@@ -83,6 +84,7 @@ const Chat = () => {
     );
     setMessages(masgToBeShown);
     scrollToBottom();
+    console.log(masgToBeShown);
   }
 
   const onFileChange = (event) => {
@@ -140,6 +142,7 @@ const Chat = () => {
 
   const renderMessage = (data) => {
     const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+    const validVideoeTypes = ["video/mp4"];
     if (data?.amount !== "0") {
       return (
         <>
@@ -149,20 +152,34 @@ const Chat = () => {
     } else if (data?.text !== "null") {
       return data?.text;
     } else {
-      if (!validImageTypes.includes(data?.fileType)) {
+      if (validImageTypes.includes(data?.fileType)) {
         return (
           <center>
             <a href={data?.file} target="_blank" rel="noreferrer">
-              <DescriptionIcon fontSize="large" sx={{ fontSize: 60 }} />
-              <p>{data?.fileType}</p>
+              <img src={data?.file} alt={data?.file} />
             </a>
           </center>
+        );
+      } else if (validVideoeTypes.includes(data?.fileType)) {
+        return (
+          <video
+            id="vidObj"
+            width="100%"
+            height="360"
+            controls
+            loop
+            muted
+            autoplay
+          >
+            <source src={data?.file} type="video/mp4" />
+          </video>
         );
       } else {
         return (
           <center>
             <a href={data?.file} target="_blank" rel="noreferrer">
-              <img src={data?.file} alt={data?.file} />
+              <DescriptionIcon fontSize="large" sx={{ fontSize: 60 }} />
+              <p>{data?.fileType}</p>
             </a>
           </center>
         );

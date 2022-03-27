@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Avatar, ListItemAvatar } from "@mui/material";
 import { _fetch, _account } from "../ABI-connect/MessangerABI/connect";
 
-export default function BasicModal({ openVendorModal, closeVendorModal }) {
+export default function BasicModal({ openVendorModal, nameonly, addressonly }) {
   const [studentData, setStudentData] = React.useState([]);
   const [account, setAccount] = React.useState(null);
   let history = useNavigate();
@@ -40,8 +40,8 @@ export default function BasicModal({ openVendorModal, closeVendorModal }) {
                     <ListItemAvatar>
                       <Avatar style={{ backgroundColor: "#e78d13" }}></Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={data?.name} />
-                    <ListItemText secondary={data?.addressId} />
+                    {!addressonly && <ListItemText primary={data?.name} />}
+                    {!nameonly && <ListItemText secondary={data?.addressId} />}
                     <ListItemButton
                       onClick={() => startChat(data?.name, data?.addressId)}
                     >

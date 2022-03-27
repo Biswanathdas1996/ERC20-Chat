@@ -4,12 +4,13 @@ import { Routes, Route } from "react-router-dom";
 import Home from "@mui/icons-material/Home";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-
+import { _fetch, _account } from "./ABI-connect/MessangerABI/connect";
 import Registration from "./components/Registration";
 import Chat from "./components/Chat";
+
 import NavigationBar from "./components/NavigationBar";
 import UserList from "./components/UserList";
-import { _fetch, _account } from "./ABI-connect/MessangerABI/connect";
+import Timeline from "./components/Timeline";
 
 export const AccountContest = React.createContext("light");
 
@@ -32,6 +33,7 @@ const App = () => {
     <AccountContest.Provider value={account}>
       <NavigationBar accountBalace={accountBalace} account={account} />
       <Routes>
+        <Route path="/" element={<Timeline />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/users" element={<UserList />} />
