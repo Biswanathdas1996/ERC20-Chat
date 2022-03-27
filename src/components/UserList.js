@@ -6,6 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { useNavigate } from "react-router-dom";
 import { Avatar, ListItemAvatar } from "@mui/material";
 import { _fetch, _account } from "../ABI-connect/MessangerABI/connect";
+import Card from "@mui/material/Card";
 
 export default function BasicModal({ openVendorModal, nameonly, addressonly }) {
   const [studentData, setStudentData] = React.useState([]);
@@ -31,31 +32,35 @@ export default function BasicModal({ openVendorModal, nameonly, addressonly }) {
 
   return (
     <div className="container">
-      {studentData.length > 0
-        ? studentData.map((data, index) => {
-            if (account !== data?.addressId)
-              return (
-                <List key={index + "_User"}>
-                  <ListItem disablePadding>
-                    <ListItemAvatar>
-                      <Avatar style={{ backgroundColor: "#e78d13" }}></Avatar>
-                    </ListItemAvatar>
-                    {!addressonly && <ListItemText primary={data?.name} />}
-                    {!nameonly && <ListItemText secondary={data?.addressId} />}
-                    <ListItemButton
-                      onClick={() => startChat(data?.name, data?.addressId)}
-                    >
-                      <input
-                        className="btn btn-default btn-primary"
-                        type="submit"
-                        value={"Chat"}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                </List>
-              );
-          })
-        : "Please wait..."}
+      <Card style={{ marginTop: 20, padding: 20 }}>
+        {studentData.length > 0
+          ? studentData.map((data, index) => {
+              if (account !== data?.addressId)
+                return (
+                  <List key={index + "_User"}>
+                    <ListItem disablePadding>
+                      <ListItemAvatar>
+                        <Avatar style={{ backgroundColor: "#e78d13" }}></Avatar>
+                      </ListItemAvatar>
+                      {!addressonly && <ListItemText primary={data?.name} />}
+                      {!nameonly && (
+                        <ListItemText secondary={data?.addressId} />
+                      )}
+                      <ListItemButton
+                        onClick={() => startChat(data?.name, data?.addressId)}
+                      >
+                        <input
+                          className="btn btn-default btn-primary"
+                          type="submit"
+                          value={"Chat"}
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  </List>
+                );
+            })
+          : "Please wait..."}
+      </Card>
     </div>
   );
 }

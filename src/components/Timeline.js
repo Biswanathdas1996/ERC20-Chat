@@ -21,7 +21,6 @@ import { margin } from "@mui/lab/node_modules/@mui/system";
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   cardHolder: {
     background: "#f3f3f4",
-    alignItems: "center",
     overflow: "auto",
   },
 }));
@@ -96,23 +95,10 @@ const Timeline = () => {
       {start && <TransctionModal response={response} modalClose={modalClose} />}
 
       <div className={classes.cardHolder}>
-        <Typography
-          style={{ marginLeft: "15px", marginTop: "10px", padding: 3 }}
-          component="h1"
-          variant="h5"
-        >
-          Timeline
-        </Typography>
-
-        <Grid
-          container
-          rowSpacing={1}
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          style={{ margin: 10 }}
-        >
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={7}>
             {/* ///msg submit form */}
-            <div>
+            <div style={{ margin: 20 }}>
               <Card className={classes.card}>
                 <Grid container>
                   <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -174,18 +160,19 @@ const Timeline = () => {
                   </Grid>
                 </Grid>
               </Card>
+
+              {/* // msg list/ */}
+              <Box sx={{ width: "100%" }}>
+                {messages?.map((data, index) => {
+                  return (
+                    <>
+                      <PostCard data={data} />
+                    </>
+                  );
+                })}
+              </Box>
+              <Box sx={{ marginBottom: "10rem" }}></Box>
             </div>
-            {/* // msg list/ */}
-            <Box sx={{ width: "100%" }}>
-              {messages?.map((data, index) => {
-                return (
-                  <>
-                    <PostCard data={data} />
-                  </>
-                );
-              })}
-            </Box>
-            <Box sx={{ marginBottom: "10rem" }}></Box>
           </Grid>
           <Grid item xs={5}>
             <UserList addressonly />
