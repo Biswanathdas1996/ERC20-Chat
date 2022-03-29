@@ -95,7 +95,7 @@ export default function RecipeReviewCard({ data }) {
             component="iframe"
             src={data?.file}
             height="360"
-            autoplay={false}
+            autoPlay={false}
           />
         </a>
       )}

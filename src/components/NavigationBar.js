@@ -15,6 +15,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -177,9 +178,21 @@ export default function PrimarySearchAppBar({ accountBalace, account }) {
             />
           </Search>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button sx={{ my: 2, color: "white", display: "block" }}>
-              Users
-            </Button>
+            <Link to={"/users"}>
+              <Button sx={{ my: 2, color: "white", display: "block" }}>
+                Users
+              </Button>
+            </Link>
+            <Link to={"/nft-mint"}>
+              <Button sx={{ my: 2, color: "white", display: "block" }}>
+                Create NFT
+              </Button>
+            </Link>
+            <Link to={"/nft-list"}>
+              <Button sx={{ my: 2, color: "white", display: "block" }}>
+                NFTs
+              </Button>
+            </Link>
           </Box>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>

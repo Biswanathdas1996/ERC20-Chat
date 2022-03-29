@@ -4,15 +4,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
-import {
-  _transction,
-  _fetch,
-  _account,
-} from "../ABI-connect/MessangerABI/connect";
-import TransctionModal from "./shared/TransctionModal";
+import { _transction } from "../../ABI-connect/NFT-ABI/connect";
+import TransctionModal from "../shared/TransctionModal";
 import * as IPFS from "ipfs-core";
-import PostCard from "./shared/PostCard";
-import UserList from "./UserList";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   cardHolder: {
@@ -22,18 +16,20 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 }));
 
 const VendorSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
   text: Yup.string().required("Text is required"),
 });
 
-const Timeline = () => {
+const Mint = () => {
   const classes = useStyles();
 
   const [start, setStart] = useState(false);
   const [response, setResponse] = useState(null);
-  const [messages, setMessages] = useState(null);
   const [file, setFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState();
+  const [preview, setPreview] = useState();
 
-  const saveData = async ({ text }) => {
+  const saveData = async ({ name, text }) => {
     setStart(true);
     let responseData;
     if (file) {
@@ -41,41 +37,55 @@ const Timeline = () => {
       if (node) {
         const results = await node.add(file);
         console.log(results.path);
+
+        const metaData = {
+          name: name,
+          image: `https://ipfs.io/ipfs/${results.path}`,
+          description: text,
+          attributes: [
+            {
+              trait_type: "Base",
+              value: "Starfish",
+            },
+            {
+              trait_type: "Eyes",
+              value: "Big",
+            },
+            {
+              trait_type: "Mouth",
+              value: "Surprised",
+            },
+          ],
+        };
+        const resultsSaveMetaData = await node.add(JSON.stringify(metaData));
+        console.log("----->", resultsSaveMetaData.path);
+
         responseData = await _transction(
-          "postStory",
-          text,
-          `https://ipfs.io/ipfs/${results.path}`,
-          file.type
+          "mintNFT",
+          `https://ipfs.io/ipfs/${resultsSaveMetaData.path}`
         );
       }
-    } else {
-      responseData = await _transction("postStory", text, "null", "null");
     }
     setResponse(responseData);
-    fetchAllPosts();
   };
 
+  // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
-    fetchAllPosts();
-  }, []);
-
-  function reverseArr(input) {
-    var ret = new Array();
-    for (var i = input.length - 1; i >= 0; i--) {
-      ret.push(input[i]);
+    if (!selectedFile) {
+      setPreview(undefined);
+      return;
     }
-    return ret;
-  }
 
-  async function fetchAllPosts() {
-    const getAllPosts = await _fetch("getAllposts");
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
 
-    setMessages(reverseArr(getAllPosts));
-  }
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
 
   const onFileChange = (event) => {
-    // Update the state
     setFile(event.target.files[0]);
+    setSelectedFile(event.target.files[0]);
   };
 
   const modalClose = () => {
@@ -89,8 +99,8 @@ const Timeline = () => {
 
       <div className={classes.cardHolder}>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={7}>
-            {/* ///msg submit form */}
+          <Grid item xs={3}></Grid>
+          <Grid item xs={6}>
             <div style={{ margin: 20 }}>
               <Card className={classes.card}>
                 <Grid container>
@@ -101,8 +111,10 @@ const Timeline = () => {
                         background: "white",
                       }}
                     >
+                      <h4>Create NFT</h4>
                       <Formik
                         initialValues={{
+                          name: "",
                           text: "",
                         }}
                         validationSchema={VendorSchema}
@@ -119,9 +131,26 @@ const Timeline = () => {
                             >
                               <Field
                                 type="text"
+                                name="name"
+                                autoComplete="flase"
+                                placeholder="Enter name"
+                                className={`form-control text-muted ${
+                                  touched.name && errors.name
+                                    ? "is-invalid"
+                                    : ""
+                                }`}
+                                style={{ marginRight: 10, padding: 9 }}
+                              />
+                            </div>
+                            <div
+                              className="form-group"
+                              style={{ marginLeft: 10, marginTop: 10 }}
+                            >
+                              <Field
+                                type="text"
                                 name="text"
                                 autoComplete="flase"
-                                placeholder="Enter text"
+                                placeholder="Enter description"
                                 className={`form-control text-muted ${
                                   touched.text && errors.text
                                     ? "is-invalid"
@@ -135,6 +164,20 @@ const Timeline = () => {
                                 <div style={{ marginLeft: 10, marginTop: 10 }}>
                                   <input type="file" onChange={onFileChange} />
                                 </div>
+
+                                {selectedFile && (
+                                  <center>
+                                    <img
+                                      src={preview}
+                                      alt="img"
+                                      style={{
+                                        marginTop: 20,
+                                        height: 300,
+                                        width: "auto",
+                                      }}
+                                    />
+                                  </center>
+                                )}
                               </span>
                             </div>
                             <div className="form-group">
@@ -153,26 +196,12 @@ const Timeline = () => {
                   </Grid>
                 </Grid>
               </Card>
-
-              {/* // msg list/ */}
-              <Box sx={{ width: "100%" }}>
-                {messages?.map((data, index) => {
-                  return (
-                    <>
-                      <PostCard data={data} />
-                    </>
-                  );
-                })}
-              </Box>
-              <Box sx={{ marginBottom: "10rem" }}></Box>
             </div>
           </Grid>
-          <Grid item xs={5}>
-            <UserList addressonly />
-          </Grid>
+          <Grid item xs={3}></Grid>
         </Grid>
       </div>
     </>
   );
 };
-export default Timeline;
+export default Mint;

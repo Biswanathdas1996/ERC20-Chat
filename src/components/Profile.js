@@ -69,7 +69,8 @@ const Timeline = () => {
 
   async function fetchAllPosts() {
     const getAllPosts = await _fetch("getAllposts");
-
+    const account = await _account();
+    // setAccount(account);
     setMessages(reverseArr(getAllPosts));
   }
 

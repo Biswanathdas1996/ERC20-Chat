@@ -11,6 +11,9 @@ import Chat from "./components/Chat";
 import NavigationBar from "./components/NavigationBar";
 import UserList from "./components/UserList";
 import Timeline from "./components/Timeline";
+import Profile from "./components/Profile";
+import Mint from "./components/NFT/Mint";
+import ListNft from "./components/NFT/ListNft";
 
 export const AccountContest = React.createContext("light");
 
@@ -37,6 +40,9 @@ const App = () => {
         <Route path="/chat" element={<Chat />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/users" element={<UserList />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/nft-mint" element={<Mint />} />
+        <Route path="/nft-list" element={<ListNft />} />
       </Routes>
       <div></div>
     </AccountContest.Provider>
