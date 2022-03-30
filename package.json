@@ -2,6 +2,9 @@
   "name": "lottery-react",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "16.0"
+  },
   "dependencies": {
     "@date-io/date-fns": "^2.13.1",
     "@emotion/react": "^11.8.1",
