@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -29,36 +29,22 @@ const Mint = () => {
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
 
-  const saveData = async ({ name, text }) => {
+  const saveData = async ({ name, text, attributes }) => {
     setStart(true);
     let responseData;
     if (file) {
       const node = await IPFS.create();
       if (node) {
         const results = await node.add(file);
-        console.log(results.path);
-
+        console.log("--img fingerpring-->", results.path);
         const metaData = {
           name: name,
           image: `https://ipfs.io/ipfs/${results.path}`,
           description: text,
-          attributes: [
-            {
-              trait_type: "Base",
-              value: "Starfish",
-            },
-            {
-              trait_type: "Eyes",
-              value: "Big",
-            },
-            {
-              trait_type: "Mouth",
-              value: "Surprised",
-            },
-          ],
+          attributes: attributes,
         };
         const resultsSaveMetaData = await node.add(JSON.stringify(metaData));
-        console.log("----->", resultsSaveMetaData.path);
+        console.log("---metadta-->", resultsSaveMetaData.path);
 
         responseData = await _transction(
           "mintNFT",
@@ -69,17 +55,13 @@ const Mint = () => {
     setResponse(responseData);
   };
 
-  // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
     if (!selectedFile) {
       setPreview(undefined);
       return;
     }
-
     const objectUrl = URL.createObjectURL(selectedFile);
     setPreview(objectUrl);
-
-    // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
 
@@ -116,14 +98,21 @@ const Mint = () => {
                         initialValues={{
                           name: "",
                           text: "",
+                          attributes: [
+                            {
+                              trait_type: "",
+                              value: "",
+                            },
+                          ],
                         }}
                         validationSchema={VendorSchema}
                         onSubmit={(values, { setSubmitting }) => {
+                          console.log("values=======>", values);
                           saveData(values);
                           setSubmitting(false);
                         }}
                       >
-                        {({ touched, errors, isSubmitting }) => (
+                        {({ touched, errors, isSubmitting, values }) => (
                           <Form>
                             <div
                               className="form-group"
@@ -179,6 +168,93 @@ const Mint = () => {
                                   </center>
                                 )}
                               </span>
+                            </div>
+
+                            <div className="form-group">
+                              <FieldArray
+                                name="attributes"
+                                render={(arrayHelpers) => (
+                                  <div>
+                                    {values.attributes &&
+                                    values.attributes.length > 0 ? (
+                                      values.attributes.map(
+                                        (attribut, index) => (
+                                          <div
+                                            style={{
+                                              border: "1px solid #c7c9cc",
+                                              borderRadius: 5,
+                                              padding: 12,
+                                              marginTop: 15,
+                                            }}
+                                            key={index}
+                                          >
+                                            <button
+                                              type="button"
+                                              className="btn btn-default btn-danger"
+                                              onClick={() =>
+                                                arrayHelpers.remove(index)
+                                              }
+                                              style={{
+                                                marginBottom: 10,
+                                                float: "right",
+                                              }}
+                                            >
+                                              Remove
+                                            </button>
+
+                                            <Field
+                                              name={`attributes.${index}.trait_type`}
+                                              autoComplete="flase"
+                                              placeholder="Enter Properties name"
+                                              className={`form-control text-muted `}
+                                              style={{
+                                                marginTop: 10,
+                                                padding: 9,
+                                              }}
+                                            />
+                                            <Field
+                                              name={`attributes.${index}.value`}
+                                              autoComplete="flase"
+                                              placeholder="Enter value"
+                                              className={`form-control text-muted`}
+                                              style={{
+                                                marginTop: 10,
+                                                padding: 9,
+                                              }}
+                                            />
+                                          </div>
+                                        )
+                                      )
+                                    ) : (
+                                      <button
+                                        type="button"
+                                        className="btn btn-default btn-primary"
+                                        onClick={() => arrayHelpers.push("")}
+                                      >
+                                        {/* show this when user has removed all attributes from the list */}
+                                        Add attributes
+                                      </button>
+                                    )}
+                                    {values.attributes.length !== 0 && (
+                                      <button
+                                        type="button"
+                                        className="btn btn-default btn-success"
+                                        onClick={() =>
+                                          arrayHelpers.insert(
+                                            values.attributes.length + 1,
+                                            ""
+                                          )
+                                        }
+                                        style={{
+                                          marginTop: 10,
+                                        }}
+                                      >
+                                        + Add
+                                      </button>
+                                    )}
+                                  </div>
+                                )}
+                              />
                             </div>
                             <div className="form-group">
                               <span className="input-group-btn">
