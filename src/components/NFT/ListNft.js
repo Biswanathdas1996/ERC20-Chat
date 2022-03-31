@@ -4,8 +4,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
-import { _account } from "../../ABI-connect/NFT-ABI/connect";
+import { _account, _fetch } from "../../ABI-connect/NFT-ABI/connect";
 import PostCard from "../shared/NftCard";
+import CurrentNFTCard from "../shared/CurrentNFTCard.js";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   cardHolder: {
@@ -22,25 +23,28 @@ const Timeline = () => {
   const classes = useStyles();
 
   const [nft, setNft] = useState(null);
+  const [token, setToken] = useState([]);
 
   useEffect(() => {
     fetchAllPosts();
   }, []);
 
   async function fetchAllPosts() {
-    const account = await _account();
-    const options = { method: "GET" };
+    const getAllToken = await _fetch("getToken");
+    setToken(getAllToken);
+    // const account = await _account();
+    // const options = { method: "GET" };
 
-    fetch(
-      `https://testnets-api.opensea.io/api/v1/assets?owner=${account}&order_direction=desc`,
-      options
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-        setNft(response);
-      })
-      .catch((err) => console.error(err));
+    // fetch(
+    //   `https://testnets-api.opensea.io/api/v1/assets?owner=${account}&order_direction=desc`,
+    //   options
+    // )
+    //   .then((response) => response.json())
+    //   .then((response) => {
+    //     console.log(response);
+    //     setNft(response);
+    //   })
+    //   .catch((err) => console.error(err));
   }
 
   return (
@@ -52,10 +56,10 @@ const Timeline = () => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           style={{ padding: 20 }}
         >
-          {nft?.assets?.map((data, index) => {
+          {token?.map((data, index) => {
             return (
               <Grid item xs={12} sm={12} md={3} lg={3} key={index + "_nft"}>
-                <PostCard data={data} />
+                <CurrentNFTCard data={data} />
               </Grid>
             );
           })}

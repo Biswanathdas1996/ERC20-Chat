@@ -30,15 +30,30 @@ const Mint = () => {
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
 
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
   const saveData = async ({ name, text, attributes }) => {
     setStart(true);
     let responseData;
     if (file) {
+      const base64Img = await convertToBase64(file);
+
       const results = await await client.add(file);
       console.log("--img fingerpring-->", results.path);
       const metaData = {
         name: name,
-        image: `https://ipfs.io/ipfs/${results.path}`,
+        image: `https://ipfs.infura.io/ipfs/${results.path}`,
         description: text,
         attributes: attributes,
       };
@@ -50,10 +65,11 @@ const Mint = () => {
 
       responseData = await _transction(
         "mintNFT",
-        `https://ipfs.io/ipfs/${resultsSaveMetaData.path}`
+        `https://ipfs.infura.io/ipfs/${resultsSaveMetaData.path}`
       );
     }
     setResponse(responseData);
+    console.log("responseData", responseData);
   };
 
   useEffect(() => {
