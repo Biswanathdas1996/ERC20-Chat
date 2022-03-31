@@ -11,10 +11,12 @@ import {
   _account,
 } from "../ABI-connect/MessangerABI/connect";
 import TransctionModal from "./shared/TransctionModal";
-import * as IPFS from "ipfs-core";
+import { create } from "ipfs-http-client";
 import DescriptionIcon from "@mui/icons-material/Description";
 import { useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
+
+const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   cardHolder: {
@@ -96,23 +98,20 @@ const Chat = () => {
     setStart(true);
     console.log(file);
     console.log(file.type);
+    const results = await client.add(file);
 
-    const node = await IPFS.create();
-    if (node) {
-      const results = await node.add(file);
-      console.log(results.path);
+    console.log(results.path);
 
-      const responseData = await _transction(
-        "sendMassage",
-        receverAddress,
-        "null",
-        `https://ipfs.io/ipfs/${results.path}`,
-        file.type,
-        0
-      );
-      setResponse(responseData);
-      fetshMessages();
-    }
+    const responseData = await _transction(
+      "sendMassage",
+      receverAddress,
+      "null",
+      `https://ipfs.io/ipfs/${results.path}`,
+      file.type,
+      0
+    );
+    setResponse(responseData);
+    fetshMessages();
   };
 
   const sendAmount = async () => {

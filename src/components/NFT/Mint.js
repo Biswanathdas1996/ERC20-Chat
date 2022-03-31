@@ -6,7 +6,8 @@ import { Card, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import { _transction } from "../../ABI-connect/NFT-ABI/connect";
 import TransctionModal from "../shared/TransctionModal";
-import * as IPFS from "ipfs-core";
+import { create } from "ipfs-http-client";
+const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   cardHolder: {
@@ -33,24 +34,24 @@ const Mint = () => {
     setStart(true);
     let responseData;
     if (file) {
-      const node = await IPFS.create();
-      if (node) {
-        const results = await node.add(file);
-        console.log("--img fingerpring-->", results.path);
-        const metaData = {
-          name: name,
-          image: `https://ipfs.io/ipfs/${results.path}`,
-          description: text,
-          attributes: attributes,
-        };
-        const resultsSaveMetaData = await node.add(JSON.stringify(metaData));
-        console.log("---metadta-->", resultsSaveMetaData.path);
+      const results = await await client.add(file);
+      console.log("--img fingerpring-->", results.path);
+      const metaData = {
+        name: name,
+        image: `https://ipfs.io/ipfs/${results.path}`,
+        description: text,
+        attributes: attributes,
+      };
 
-        responseData = await _transction(
-          "mintNFT",
-          `https://ipfs.io/ipfs/${resultsSaveMetaData.path}`
-        );
-      }
+      const resultsSaveMetaData = await await client.add(
+        JSON.stringify(metaData)
+      );
+      console.log("---metadta-->", resultsSaveMetaData.path);
+
+      responseData = await _transction(
+        "mintNFT",
+        `https://ipfs.io/ipfs/${resultsSaveMetaData.path}`
+      );
     }
     setResponse(responseData);
   };

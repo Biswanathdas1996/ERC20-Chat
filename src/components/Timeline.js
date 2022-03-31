@@ -10,9 +10,11 @@ import {
   _account,
 } from "../ABI-connect/MessangerABI/connect";
 import TransctionModal from "./shared/TransctionModal";
-import * as IPFS from "ipfs-core";
+import { create } from "ipfs-http-client";
 import PostCard from "./shared/PostCard";
 import UserList from "./UserList";
+
+const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   cardHolder: {
@@ -37,17 +39,14 @@ const Timeline = () => {
     setStart(true);
     let responseData;
     if (file) {
-      const node = await IPFS.create();
-      if (node) {
-        const results = await node.add(file);
-        console.log(results.path);
-        responseData = await _transction(
-          "postStory",
-          text,
-          `https://ipfs.io/ipfs/${results.path}`,
-          file.type
-        );
-      }
+      const results = await client.add(file);
+      console.log(results.path);
+      responseData = await _transction(
+        "postStory",
+        text,
+        `https://ipfs.io/ipfs/${results.path}`,
+        file.type
+      );
     } else {
       responseData = await _transction("postStory", text, "null", "null");
     }

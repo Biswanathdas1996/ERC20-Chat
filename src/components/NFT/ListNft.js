@@ -32,14 +32,13 @@ const Timeline = () => {
     const options = { method: "GET" };
 
     fetch(
-      "https://testnets-api.opensea.io/api/v1/assets?owner=0x5596AaBC06A6bf4cB933C60211f66839EC8829a9&order_direction=desc&offset=0&limit=20",
+      `https://testnets-api.opensea.io/api/v1/assets?owner=${account}&order_direction=desc`,
       options
     )
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
         setNft(response);
-        console.log(response);
       })
       .catch((err) => console.error(err));
   }
