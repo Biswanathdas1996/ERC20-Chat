@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -16,6 +16,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import { _fetch, _account } from "../ABI-connect/MessangerABI/connect";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -57,7 +58,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar({ accountBalace, account }) {
+export default function PrimarySearchAppBar() {
+  const [account, setAccount] = React.useState(null);
+  const [accountBalace, setAccountBalace] = React.useState(null);
+
+  async function fetchUserData() {
+    const account = await _account();
+    const accountBalace = await _fetch("balanceOf", account);
+    setAccountBalace(accountBalace);
+    setAccount(account);
+  }
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -148,7 +163,7 @@ export default function PrimarySearchAppBar({ accountBalace, account }) {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
-        style={{ backgroundColor: "#d25304", color: "#fff" }}
+        style={{ backgroundColor: "rgb(124 0 124)", color: "#fff" }}
       >
         <Toolbar>
           <IconButton

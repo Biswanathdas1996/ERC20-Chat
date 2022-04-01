@@ -1,5 +1,7 @@
 body {
   background-color: "#f3f3f4 !important";
+  font-family: "Lato", sans-serif;
+  color: #888;
 }
 
 .App {
@@ -43,8 +45,8 @@ body {
 
 .btn-primary {
   color: #fff !important;
-  background-color: #d25304 !important;
-  border-color: #d25304 !important;
+  background-color: rgb(124 0 124) !important;
+  border-color: rgb(124 0 124) !important;
   padding: 10px !important;
   width: 8rem !important;
 }

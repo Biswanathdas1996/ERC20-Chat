@@ -1,49 +1,38 @@
 import "./App.css";
-import React, { useEffect } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "@mui/icons-material/Home";
-import { AppBar, Toolbar, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import { _fetch, _account } from "./ABI-connect/MessangerABI/connect";
 import Registration from "./components/Registration";
 import Chat from "./components/Chat";
-
 import NavigationBar from "./components/NavigationBar";
 import UserList from "./components/UserList";
 import Timeline from "./components/Timeline";
 import Mint from "./components/NFT/Mint";
 import ListNft from "./components/NFT/ListNft";
+import Error401Page from "./components/Errors/401";
 
 export const AccountContest = React.createContext("light");
 
+const isEthEnebled = window?.ethereum?.request({
+  method: "eth_requestAccounts",
+});
+
 const App = () => {
-  const [account, setAccount] = React.useState(null);
-  const [accountBalace, setAccountBalace] = React.useState(null);
-
-  async function fetchUserData() {
-    const account = await _account();
-    const accountBalace = await _fetch("balanceOf", account);
-    setAccountBalace(accountBalace);
-    setAccount(account);
+  if (isEthEnebled) {
+    return (
+      <AccountContest.Provider>
+        <NavigationBar />
+        <Routes>
+          <Route path="/" element={<Timeline />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/register" element={<Registration />} />
+          <Route path="/users" element={<UserList />} />
+          <Route path="/nft-mint" element={<Mint />} />
+          <Route path="/nft-list" element={<ListNft />} />
+        </Routes>
+      </AccountContest.Provider>
+    );
+  } else {
+    return <Error401Page />;
   }
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  return (
-    <AccountContest.Provider value={account}>
-      <NavigationBar accountBalace={accountBalace} account={account} />
-      <Routes>
-        <Route path="/" element={<Timeline />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/register" element={<Registration />} />
-        <Route path="/users" element={<UserList />} />
-        <Route path="/nft-mint" element={<Mint />} />
-        <Route path="/nft-list" element={<ListNft />} />
-      </Routes>
-      <div></div>
-    </AccountContest.Provider>
-  );
 };
 export default App;
