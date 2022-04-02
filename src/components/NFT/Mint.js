@@ -72,7 +72,7 @@ const Mint = () => {
       );
     }
     setResponse(responseData);
-    history("/nft-list");
+    history("/nft-market");
     console.log("responseData", responseData);
   };
 

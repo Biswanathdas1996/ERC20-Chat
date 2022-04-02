@@ -52,17 +52,17 @@ export default function RecipeReviewCard({ data }) {
       />
       {validImageTypes.includes(data?.fileType) && (
         <a href={data?.file} target="_blank" rel="noreferrer">
-          <CardMedia component="img" image={data?.file} alt="Paella dish" />
+          <CardMedia
+            component="img"
+            image={data?.file}
+            alt="Paella dish"
+            height="360"
+          />
         </a>
       )}
       {validVideoeTypes.includes(data?.fileType) && (
         <a href={data?.file} target="_blank" rel="noreferrer">
-          <CardMedia
-            component="iframe"
-            src={data?.file}
-            height="360"
-            autoPlay={false}
-          />
+          <CardMedia component="iframe" src={data?.file} height="360" />
         </a>
       )}
       {!validVideoeTypes.includes(data?.fileType) &&

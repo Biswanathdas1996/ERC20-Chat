@@ -8,6 +8,7 @@ import UserList from "./components/UserList";
 import Timeline from "./components/Timeline";
 import Mint from "./components/NFT/Mint";
 import ListNft from "./components/NFT/ListNft";
+import MyNft from "./components/NFT/MyNft";
 import NftDetails from "./components/NFT/NftDetails";
 import Error401Page from "./components/Errors/401";
 
@@ -28,7 +29,8 @@ const App = () => {
           <Route path="/register" element={<Registration />} />
           <Route path="/users" element={<UserList />} />
           <Route path="/nft-mint" element={<Mint />} />
-          <Route path="/nft-list" element={<ListNft />} />
+          <Route path="/nft-market" element={<ListNft />} />
+          <Route path="/my-nft" element={<MyNft />} />
           <Route path="/nft-details/:id" element={<NftDetails />} />
         </Routes>
       </>

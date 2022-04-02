@@ -198,14 +198,24 @@ export default function PrimarySearchAppBar() {
                 Users
               </Button>
             </Link>
+            <Link to={"/register"}>
+              <Button sx={{ my: 2, color: "white", display: "block" }}>
+                Register
+              </Button>
+            </Link>
             <Link to={"/nft-mint"}>
               <Button sx={{ my: 2, color: "white", display: "block" }}>
                 Create NFT
               </Button>
             </Link>
-            <Link to={"/nft-list"}>
+            <Link to={"/my-nft"}>
               <Button sx={{ my: 2, color: "white", display: "block" }}>
-                NFTs
+                My NFT's
+              </Button>
+            </Link>
+            <Link to={"/nft-market"}>
+              <Button sx={{ my: 2, color: "white", display: "block" }}>
+                NFT Market
               </Button>
             </Link>
           </Box>

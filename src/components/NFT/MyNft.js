@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { Grid } from "@mui/material";
-import { _fetch } from "../../ABI-connect/NFT-ABI/connect";
+import { _fetch, _account } from "../../ABI-connect/NFT-ABI/connect";
 import CurrentNFTCard from "../shared/CurrentNFTCard";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
@@ -16,15 +14,30 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 const Timeline = () => {
   const classes = useStyles();
   const [token, setToken] = useState([]);
+  const [counter, setCounter] = useState(0);
+  const [account, setAccount] = useState(null);
   useEffect(() => {
     fetchAllPosts();
   }, []);
 
   async function fetchAllPosts() {
     const getAllToken = await _fetch("getToken");
-    setToken(getAllToken);
+    const account = await _account();
+    console.log(account);
+    const tokenOwnedByMe = [];
+
+    await getAllToken.map(async (tokenId) => {
+      const owner = await _fetch("ownerOf", tokenId);
+      if (account == owner) {
+        tokenOwnedByMe.push(tokenId);
+        console.log("tokenId", tokenId);
+        setToken(tokenOwnedByMe);
+      }
+      setCounter((prev) => prev + 1);
+    });
   }
 
+  console.log("token", token);
   return (
     <>
       <div className={classes.cardHolder}>
