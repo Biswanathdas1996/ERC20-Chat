@@ -8,6 +8,7 @@ import UserList from "./components/UserList";
 import Timeline from "./components/Timeline";
 import Mint from "./components/NFT/Mint";
 import ListNft from "./components/NFT/ListNft";
+import NftDetails from "./components/NFT/NftDetails";
 import Error401Page from "./components/Errors/401";
 
 export const AccountContest = React.createContext("light");
@@ -19,7 +20,7 @@ const isEthEnebled = window?.ethereum?.request({
 const App = () => {
   if (isEthEnebled) {
     return (
-      <AccountContest.Provider>
+      <>
         <NavigationBar />
         <Routes>
           <Route path="/" element={<Timeline />} />
@@ -28,8 +29,9 @@ const App = () => {
           <Route path="/users" element={<UserList />} />
           <Route path="/nft-mint" element={<Mint />} />
           <Route path="/nft-list" element={<ListNft />} />
+          <Route path="/nft-details/:id" element={<NftDetails />} />
         </Routes>
-      </AccountContest.Provider>
+      </>
     );
   } else {
     return <Error401Page />;

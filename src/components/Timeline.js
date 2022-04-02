@@ -86,88 +86,80 @@ const Timeline = () => {
     <>
       {start && <TransctionModal response={response} modalClose={modalClose} />}
 
-      <div className={classes.cardHolder}>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={7}>
-            {/* ///msg submit form */}
-            <div style={{ margin: 20 }}>
-              <Card className={classes.card}>
-                <Grid container>
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <div
-                      style={{
-                        padding: "20px",
-                        background: "white",
-                      }}
-                    >
-                      <Formik
-                        initialValues={{
-                          text: "",
-                        }}
-                        validationSchema={VendorSchema}
-                        onSubmit={(values, { setSubmitting }) => {
-                          saveData(values);
-                          setSubmitting(false);
-                        }}
+      <div
+        className={classes.cardHolder}
+        style={{ padding: 20, background: "#f3f3f4" }}
+      >
+        <Grid
+          container
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          style={{ marginBottom: 20 }}
+        >
+          <Grid item xs={12} lg={7} md={7} sm={12}>
+            <Card className={classes.card}>
+              <div style={{ padding: 20, marginLeft: 20 }}>
+                <Formik
+                  initialValues={{
+                    text: "",
+                  }}
+                  validationSchema={VendorSchema}
+                  onSubmit={(values, { setSubmitting }) => {
+                    saveData(values);
+                    setSubmitting(false);
+                  }}
+                >
+                  {({ touched, errors, isSubmitting }) => (
+                    <Form>
+                      <div
+                        className="form-group"
+                        style={{ marginLeft: 10, marginTop: 10 }}
                       >
-                        {({ touched, errors, isSubmitting }) => (
-                          <Form>
-                            <div
-                              className="form-group"
-                              style={{ marginLeft: 10, marginTop: 10 }}
-                            >
-                              <Field
-                                type="text"
-                                name="text"
-                                autoComplete="flase"
-                                placeholder="Enter text"
-                                className={`form-control text-muted ${
-                                  touched.text && errors.text
-                                    ? "is-invalid"
-                                    : ""
-                                }`}
-                                style={{ marginRight: 10, padding: 9 }}
-                              />
-                            </div>
-                            <div className="form-group">
-                              <span className="input-group-btn">
-                                <div style={{ marginLeft: 10, marginTop: 10 }}>
-                                  <input type="file" onChange={onFileChange} />
-                                </div>
-                              </span>
-                            </div>
-                            <div className="form-group">
-                              <span className="input-group-btn">
-                                <input
-                                  className="btn btn-default btn-primary"
-                                  type="submit"
-                                  value={"Submit"}
-                                />
-                              </span>
-                            </div>
-                          </Form>
-                        )}
-                      </Formik>
-                    </div>
-                  </Grid>
-                </Grid>
-              </Card>
+                        <Field
+                          type="text"
+                          name="text"
+                          autoComplete="flase"
+                          placeholder="Enter text"
+                          className={`form-control text-muted ${
+                            touched.text && errors.text ? "is-invalid" : ""
+                          }`}
+                          style={{ marginRight: 10, padding: 9 }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <span className="input-group-btn">
+                          <div style={{ marginLeft: 10, marginTop: 10 }}>
+                            <input type="file" onChange={onFileChange} />
+                          </div>
+                        </span>
+                      </div>
+                      <div className="form-group">
+                        <span className="input-group-btn">
+                          <input
+                            className="btn btn-default btn-primary"
+                            type="submit"
+                            value={"Submit"}
+                          />
+                        </span>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            </Card>
 
-              {/* // msg list/ */}
-              <Box sx={{ width: "100%" }}>
-                {messages?.map((data, index) => {
-                  return (
-                    <>
-                      <PostCard data={data} />
-                    </>
-                  );
-                })}
-              </Box>
-              <Box sx={{ marginBottom: "10rem" }}></Box>
-            </div>
+            <Box style={{ marginBottom: 20 }}>
+              {messages?.map((data, index) => {
+                return (
+                  <>
+                    <PostCard data={data} />
+                  </>
+                );
+              })}
+            </Box>
           </Grid>
-          <Grid item xs={5}>
-            <UserList addressonly />
+          <Grid item xs={12} lg={5} md={5} sm={12}>
+            <UserList />
           </Grid>
         </Grid>
       </div>

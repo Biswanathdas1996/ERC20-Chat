@@ -7,6 +7,8 @@ import Box from "@mui/material/Box";
 import { _transction } from "../../ABI-connect/NFT-ABI/connect";
 import TransctionModal from "../shared/TransctionModal";
 import { create } from "ipfs-http-client";
+import { useNavigate } from "react-router-dom";
+
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
@@ -29,6 +31,7 @@ const Mint = () => {
   const [file, setFile] = useState(null);
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
+  let history = useNavigate();
 
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -69,6 +72,7 @@ const Mint = () => {
       );
     }
     setResponse(responseData);
+    history("/nft-list");
     console.log("responseData", responseData);
   };
 

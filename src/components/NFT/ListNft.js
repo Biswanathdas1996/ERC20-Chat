@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Card, Grid } from "@mui/material";
-import Box from "@mui/material/Box";
-import { _account, _fetch } from "../../ABI-connect/NFT-ABI/connect";
-import PostCard from "../shared/NftCard";
-import CurrentNFTCard from "../shared/CurrentNFTCard.js";
+import { Grid } from "@mui/material";
+import { _fetch } from "../../ABI-connect/NFT-ABI/connect";
+import CurrentNFTCard from "../shared/CurrentNFTCard";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   cardHolder: {
@@ -32,19 +30,6 @@ const Timeline = () => {
   async function fetchAllPosts() {
     const getAllToken = await _fetch("getToken");
     setToken(getAllToken);
-    // const account = await _account();
-    // const options = { method: "GET" };
-
-    // fetch(
-    //   `https://testnets-api.opensea.io/api/v1/assets?owner=${account}&order_direction=desc`,
-    //   options
-    // )
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     console.log(response);
-    //     setNft(response);
-    //   })
-    //   .catch((err) => console.error(err));
   }
 
   return (

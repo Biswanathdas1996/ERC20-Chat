@@ -14,7 +14,6 @@ import TransctionModal from "./shared/TransctionModal";
 import { create } from "ipfs-http-client";
 import DescriptionIcon from "@mui/icons-material/Description";
 import { useNavigate } from "react-router-dom";
-import ReactPlayer from "react-player";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 

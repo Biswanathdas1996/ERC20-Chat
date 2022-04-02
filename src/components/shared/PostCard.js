@@ -35,40 +35,6 @@ export default function RecipeReviewCard({ data }) {
   };
 
   return (
-    /* <>
-     
-        <p>{data?.sender}</p>
-        {data?.text}
-        {validImageTypes.includes(data?.fileType) && (
-          <center>
-            <a href={data?.file} target="_blank" rel="noreferrer">
-              <img src={data?.file} alt={data?.file} />
-            </a>
-          </center>
-        )}
-        {validVideoeTypes.includes(data?.fileType) && (
-          <video
-            id="vidObj"
-            width="100%"
-            height="360"
-            controls
-            loop
-            muted
-            autoplay
-          >
-            <source src={data?.file} type="video/mp4" />
-          </video>
-        )}
-        {!validVideoeTypes.includes(data?.fileType) &&
-          !validImageTypes.includes(data?.fileType) && (
-            <center>
-              <a href={data?.file} target="_blank" rel="noreferrer">
-                <DescriptionIcon fontSize="large" sx={{ fontSize: 60 }} />
-                <p>{data?.fileType}</p>
-              </a>
-            </center>
-          )}
-      </> */
     <Card style={{ marginTop: 20 }}>
       <CardHeader
         avatar={

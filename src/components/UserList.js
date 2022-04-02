@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Avatar, ListItemAvatar } from "@mui/material";
 import { _fetch, _account } from "../ABI-connect/MessangerABI/connect";
 import Card from "@mui/material/Card";
+import { Grid } from "@mui/material";
 
 export default function BasicModal({ openVendorModal, nameonly, addressonly }) {
   const [studentData, setStudentData] = React.useState([]);
@@ -31,21 +32,38 @@ export default function BasicModal({ openVendorModal, nameonly, addressonly }) {
   };
 
   return (
-    <div className="container">
-      <Card style={{ marginTop: 20, padding: 20 }}>
+    <Card style={{ padding: 20 }}>
+      <Grid
+        container
+        rowSpacing={1}
+        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        style={{ marginBottom: 20 }}
+      >
         {studentData.length > 0
           ? studentData.map((data, index) => {
               if (account !== data?.addressId)
                 return (
-                  <List key={index + "_User"}>
-                    <ListItem disablePadding>
+                  <>
+                    <Grid
+                      item
+                      xs={9}
+                      lg={9}
+                      md={9}
+                      sm={9}
+                      style={{ display: "flex", flexDirection: "row" }}
+                    >
                       <ListItemAvatar>
                         <Avatar style={{ backgroundColor: "#e78d13" }}></Avatar>
                       </ListItemAvatar>
-                      {!addressonly && <ListItemText primary={data?.name} />}
-                      {!nameonly && (
-                        <ListItemText secondary={data?.addressId} />
-                      )}
+                      <div>
+                        {!addressonly && <ListItemText primary={data?.name} />}
+                        {!nameonly && (
+                          <p style={{ fontSize: 10 }}>{data?.addressId}</p>
+                        )}
+                      </div>
+                    </Grid>
+
+                    <Grid item xs={3} lg={3} md={3} sm={3}>
                       <ListItemButton
                         onClick={() => startChat(data?.name, data?.addressId)}
                       >
@@ -55,12 +73,12 @@ export default function BasicModal({ openVendorModal, nameonly, addressonly }) {
                           value={"Chat"}
                         />
                       </ListItemButton>
-                    </ListItem>
-                  </List>
+                    </Grid>
+                  </>
                 );
             })
           : "Please wait..."}
-      </Card>
-    </div>
+      </Grid>
+    </Card>
   );
 }

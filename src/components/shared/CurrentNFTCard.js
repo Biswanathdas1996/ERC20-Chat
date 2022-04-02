@@ -16,6 +16,8 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { _fetch } from "../../ABI-connect/NFT-ABI/connect";
 import Address from "../../ABI-connect/NFT-ABI/Address.json";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
 export default function RecipeReviewCard({ data }) {
   const [nftData, setNftData] = useState(null);
@@ -40,7 +42,7 @@ export default function RecipeReviewCard({ data }) {
       <Card style={{ marginTop: 20 }}>
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+            <Avatar sx={{ bgcolor: "rgb(124, 0, 124)" }} aria-label="recipe">
               R
             </Avatar>
           }
@@ -61,33 +63,35 @@ export default function RecipeReviewCard({ data }) {
           weidth="300"
         />
 
-        <CardContent style={{ height: 180 }}>
+        <CardContent>
           <Typography variant="body2" color="text.secondary">
             <h5 style={{ fontSize: 10 }}>
               <b>Owner: </b>
               {owner}
             </h5>
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {nftData?.description}
-          </Typography>
         </CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-
+        <CardActions style={{ padding: 20 }} disableSpacing>
+          <Link to={`/nft-details/${data}`}>
+            <Button
+              variant="contained"
+              style={{ marginRight: 10 }}
+              color="warning"
+            >
+              View
+            </Button>
+          </Link>
           <a
             href={`https://testnets.opensea.io/assets/${Address}/${data}`}
             target="_blank"
             rel="noreferrer"
           >
-            View on OpenSea
+            <Button variant="contained">View on OpenSea</Button>
           </a>
         </CardActions>
       </Card>
     );
   } else {
-    return <>Loading....</>;
+    return <></>;
   }
 }
