@@ -8,10 +8,10 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 contract MyNFT is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
-
+    uint[] public nftTokenList;
     Counters.Counter private _tokenIds;
 
-    constructor() ERC721("Papun", "CERP") {}
+    constructor() ERC721("Biswanath", "BIS") {}
 
     function mintNFT(string memory tokenURI)
         public
@@ -22,6 +22,12 @@ contract MyNFT is ERC721URIStorage, Ownable {
         uint256 newItemId = _tokenIds.current();
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
+        nftTokenList.push(newItemId);
         return newItemId;
     }
+
+    function getToken() public view returns (uint[] memory) {
+        return  nftTokenList;
+    }
+
 }
