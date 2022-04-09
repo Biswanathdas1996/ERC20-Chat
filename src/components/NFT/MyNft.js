@@ -49,7 +49,7 @@ const Timeline = () => {
         >
           {token?.map((data, index) => {
             return (
-              <Grid item xs={12} sm={12} md={3} lg={3} key={index + "_nft"}>
+              <Grid item xs={12} sm={12} md={3} lg={3} key={index + "_nfts"}>
                 <CurrentNFTCard data={data} />
               </Grid>
             );
