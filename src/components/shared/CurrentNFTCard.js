@@ -29,6 +29,7 @@ export default function RecipeReviewCard({ data }) {
   async function fetchAllPosts() {
     const getAllTokenUri = await _fetch("tokenURI", data);
     const getOwner = await _fetch("ownerOf", data);
+
     setOwner(getOwner);
     const response = await fetch(getAllTokenUri)
       .then((response) => response.json())

@@ -12,6 +12,10 @@ import MyNft from "./components/NFT/MyNft";
 import NftDetails from "./components/NFT/NftDetails";
 import Error401Page from "./components/Errors/401";
 
+import CreatePass from "./components/Event-Pass/CreatePass";
+import ListAllPass from "./components/Event-Pass/ListAllPass";
+import MyPass from "./components/Event-Pass/MyPass";
+
 export const AccountContest = React.createContext("light");
 
 const isEthEnebled = window?.ethereum?.request({
@@ -32,6 +36,10 @@ const App = () => {
           <Route path="/nft-market" element={<ListNft />} />
           <Route path="/my-nft" element={<MyNft />} />
           <Route path="/nft-details/:id" element={<NftDetails />} />
+
+          <Route path="/event/create" element={<CreatePass />} />
+          <Route path="/event/all" element={<ListAllPass />} />
+          <Route path="/event/my-account" element={<MyPass />} />
         </Routes>
       </>
     );

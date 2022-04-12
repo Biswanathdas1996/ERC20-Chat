@@ -30,7 +30,6 @@ contract MyToken is ERC20 {
     }
 
 
-
     address public admin;
     mapping(address => uint) uniqueAddress;
     User[] public users;

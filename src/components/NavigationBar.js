@@ -218,6 +218,21 @@ export default function PrimarySearchAppBar() {
                 NFT Market
               </Button>
             </Link>
+            <Link to={"/event/create"}>
+              <Button sx={{ my: 2, color: "white", display: "block" }}>
+                Create Tickets
+              </Button>
+            </Link>
+            <Link to={"/event/all"}>
+              <Button sx={{ my: 2, color: "white", display: "block" }}>
+                Buy Tickets
+              </Button>
+            </Link>
+            <Link to={"/event/my-account"}>
+              <Button sx={{ my: 2, color: "white", display: "block" }}>
+                My Tickets
+              </Button>
+            </Link>
           </Box>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
