@@ -58,6 +58,7 @@ const NftCard = ({ data, baseExtention, symbol, cost }) => {
     setStart(false);
     setResponse(null);
   };
+
   return (
     <>
       {start && <TransctionModal response={response} modalClose={modalClose} />}
