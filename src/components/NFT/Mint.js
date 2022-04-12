@@ -8,6 +8,8 @@ import { _transction } from "../../ABI-connect/NFT-ABI/connect";
 import TransctionModal from "../shared/TransctionModal";
 import { create } from "ipfs-http-client";
 import { useNavigate } from "react-router-dom";
+import Web3 from "web3";
+const web3 = new Web3(window.ethereum);
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -21,6 +23,8 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 const VendorSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   text: Yup.string().required("Text is required"),
+  price: Yup.string().required("Price is required"),
+  royelty: Yup.string().required("Royelty amount is required"),
 });
 
 const Mint = () => {
@@ -33,25 +37,10 @@ const Mint = () => {
   const [preview, setPreview] = useState();
   let history = useNavigate();
 
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-
-  const saveData = async ({ name, text, attributes }) => {
+  const saveData = async ({ name, text, attributes, price, royelty }) => {
     setStart(true);
     let responseData;
     if (file) {
-      const base64Img = await convertToBase64(file);
-
       const results = await await client.add(file);
       console.log("--img fingerpring-->", results.path);
       const metaData = {
@@ -68,7 +57,9 @@ const Mint = () => {
 
       responseData = await _transction(
         "mintNFT",
-        `https://ipfs.infura.io/ipfs/${resultsSaveMetaData.path}`
+        `https://ipfs.infura.io/ipfs/${resultsSaveMetaData.path}`,
+        web3.utils.toWei(price.toString(), "ether"),
+        royelty
       );
     }
     setResponse(responseData);
@@ -119,6 +110,8 @@ const Mint = () => {
                         initialValues={{
                           name: "",
                           text: "",
+                          royelty: "",
+                          price: "",
                           attributes: [
                             {
                               trait_type: "",
@@ -163,6 +156,40 @@ const Mint = () => {
                                 placeholder="Enter description"
                                 className={`form-control text-muted ${
                                   touched.text && errors.text
+                                    ? "is-invalid"
+                                    : ""
+                                }`}
+                                style={{ marginRight: 10, padding: 9 }}
+                              />
+                            </div>
+                            <div
+                              className="form-group"
+                              style={{ marginLeft: 10, marginTop: 10 }}
+                            >
+                              <Field
+                                type="number"
+                                name="price"
+                                autoComplete="flase"
+                                placeholder="Enter price in ETH"
+                                className={`form-control text-muted ${
+                                  touched.price && errors.price
+                                    ? "is-invalid"
+                                    : ""
+                                }`}
+                                style={{ marginRight: 10, padding: 9 }}
+                              />
+                            </div>
+                            <div
+                              className="form-group"
+                              style={{ marginLeft: 10, marginTop: 10 }}
+                            >
+                              <Field
+                                type="number"
+                                name="royelty"
+                                autoComplete="flase"
+                                placeholder="Enter royelty amount (%)"
+                                className={`form-control text-muted ${
+                                  touched.royelty && errors.royelty
                                     ? "is-invalid"
                                     : ""
                                 }`}

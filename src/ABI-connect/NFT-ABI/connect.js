@@ -26,6 +26,22 @@ export const _transction = async (service, ...props) => {
   return responseData;
 };
 
+export const _paid_transction = async (cost, service, ...props) => {
+  const callService = _.get(contract, ["methods", service]);
+  const accounts = await web3.eth.getAccounts();
+  const responseData = await callService(...props)
+    .send({
+      from: accounts[0],
+      value: cost,
+    })
+    .then((data) => data)
+    .catch((error) => {
+      const errorData = { error };
+      return { error: errorData.error };
+    });
+  return responseData;
+};
+
 export const _account = async () => {
   const accounts = await web3.eth.getAccounts();
   return accounts[0];
