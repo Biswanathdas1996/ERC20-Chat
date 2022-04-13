@@ -3,11 +3,10 @@ import { Grid } from "@mui/material";
 import { _fetch, _account } from "../../ABI-connect/NFT-ABI/connect";
 import CurrentNFTCard from "../shared/CurrentNFTCard";
 import Loader from "../shared/Loader";
+import NoData from "../shared/NoData";
 
 const Timeline = () => {
   const [token, setToken] = useState([]);
-  const [counter, setCounter] = useState(0);
-  const [account, setAccount] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchAllPosts();
@@ -27,7 +26,6 @@ const Timeline = () => {
         console.log("tokenId", tokenId);
         setToken(tokenOwnedByMe);
       }
-      setCounter((prev) => prev + 1);
     });
     setLoading(false);
   }
@@ -43,16 +41,17 @@ const Timeline = () => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           style={{ padding: 20 }}
         >
-          {token?.map((data, index) => {
-            return (
-              <Grid item xs={12} sm={12} md={3} lg={3} key={index + "_nfts"}>
-                <CurrentNFTCard data={data} />
-              </Grid>
-            );
-          })}
-          {token?.length === 0 && (
-            <Grid item xs={12} sm={12} md={3} lg={3} key="1">
-              <h5>No NFT found</h5>
+          {token?.length !== 0 ? (
+            token?.map((data, index) => {
+              return (
+                <Grid item xs={12} sm={12} md={3} lg={3} key={index + "_nfts"}>
+                  <CurrentNFTCard data={data} />
+                </Grid>
+              );
+            })
+          ) : (
+            <Grid item xs={12} sm={12} md={3} lg={3} key={1}>
+              <NoData text="No NFT found" />
             </Grid>
           )}
         </Grid>

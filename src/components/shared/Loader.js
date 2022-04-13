@@ -8,9 +8,6 @@ const Loader = () => {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        transform: "-webkit-translate(-50%, -50%)",
-        transform: "-moz-translate(-50%, -50%)",
-        transform: "-ms-translate(-50%, -50%)",
       }}
     >
       <div className="la-ball-clip-rotate-pulse la-dark la-3x">

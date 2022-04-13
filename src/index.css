@@ -1,7 +1,7 @@
 body {
   margin: 0;
   color: #888;
-  background: #f3f3f4;
+  background: #f3f3f4 !important;
   font-family: "Lato", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

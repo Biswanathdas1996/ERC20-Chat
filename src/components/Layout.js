@@ -17,7 +17,16 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import { Link } from "react-router-dom";
+import HomeIcon from "@mui/icons-material/Home";
+import GroupIcon from "@mui/icons-material/Group";
+import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import BallotIcon from "@mui/icons-material/Ballot";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
+import AddBusinessIcon from "@mui/icons-material/AddBusiness";
+import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+
 import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
@@ -52,29 +61,17 @@ const menuItemsData = [
   {
     title: "Home",
     link: "/",
+    icon: () => <HomeIcon />,
   },
   {
     title: "Users",
     link: "/users",
+    icon: () => <GroupIcon />,
   },
   {
     title: "Register",
     link: "/register",
-  },
-];
-
-const menuTickets = [
-  {
-    title: "Create Ticket",
-    link: "/event/create",
-  },
-  {
-    title: "Buy Ticket",
-    link: "/event/all",
-  },
-  {
-    title: "My Ticket",
-    link: "/event/my-account",
+    icon: () => <ExitToAppIcon />,
   },
 ];
 
@@ -82,14 +79,35 @@ const menuNFT = [
   {
     title: "Create NFT",
     link: "/nft-mint",
+    icon: () => <CreateNewFolderIcon />,
   },
   {
     title: "My NFT",
     link: "/my-nft",
+    icon: () => <BallotIcon />,
   },
   {
     title: "NFT Marketplace",
     link: "/nft-market",
+    icon: () => <LocalGroceryStoreIcon />,
+  },
+];
+
+const menuTickets = [
+  {
+    title: "Create Ticket",
+    link: "/event/create",
+    icon: () => <NoteAddIcon />,
+  },
+  {
+    title: "Buy Ticket",
+    link: "/event/all",
+    icon: () => <AddBusinessIcon />,
+  },
+  {
+    title: "My Ticket",
+    link: "/event/my-account",
+    icon: () => <FactCheckIcon />,
   },
 ];
 
@@ -160,9 +178,7 @@ export default function Layout({ body }) {
         <List>
           {menuItemsData.map((item, index) => (
             <ListItem button key={index} onClick={() => navigate(item?.link)}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
+              <ListItemIcon>{item?.icon()}</ListItemIcon>
               <ListItemText primary={item?.title} />
             </ListItem>
           ))}
@@ -171,9 +187,7 @@ export default function Layout({ body }) {
         <List>
           {menuNFT.map((item, index) => (
             <ListItem button key={index} onClick={() => navigate(item?.link)}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
+              <ListItemIcon>{item?.icon()}</ListItemIcon>
               <ListItemText primary={item?.title} />
             </ListItem>
           ))}
@@ -182,9 +196,7 @@ export default function Layout({ body }) {
         <List>
           {menuTickets.map((item, index) => (
             <ListItem button key={index} onClick={() => navigate(item?.link)}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
+              <ListItemIcon>{item?.icon()}</ListItemIcon>
               <ListItemText primary={item?.title} />
             </ListItem>
           ))}

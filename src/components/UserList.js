@@ -32,53 +32,59 @@ export default function BasicModal({ openVendorModal, nameonly, addressonly }) {
   };
 
   return (
-    <Card style={{ padding: 20 }}>
-      <Grid
-        container
-        rowSpacing={1}
-        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        style={{ marginBottom: 20 }}
-      >
-        {studentData.length > 0
-          ? studentData.map((data, index) => {
-              if (account !== data?.addressId)
-                return (
-                  <>
-                    <Grid
-                      item
-                      xs={9}
-                      lg={9}
-                      md={9}
-                      sm={9}
-                      style={{ display: "flex", flexDirection: "row" }}
-                    >
-                      <ListItemAvatar>
-                        <Avatar style={{ backgroundColor: "#e78d13" }}></Avatar>
-                      </ListItemAvatar>
-                      <div>
-                        {!addressonly && <ListItemText primary={data?.name} />}
-                        {!nameonly && (
-                          <p style={{ fontSize: 10 }}>{data?.addressId}</p>
-                        )}
-                      </div>
-                    </Grid>
-
-                    <Grid item xs={3} lg={3} md={3} sm={3}>
-                      <ListItemButton
-                        onClick={() => startChat(data?.name, data?.addressId)}
+    <div style={{ padding: 20 }}>
+      <Card style={{ padding: 20 }}>
+        <Grid
+          container
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          style={{ marginBottom: 20 }}
+        >
+          {studentData.length > 0
+            ? studentData.map((data, index) => {
+                if (account !== data?.addressId)
+                  return (
+                    <>
+                      <Grid
+                        item
+                        xs={9}
+                        lg={9}
+                        md={9}
+                        sm={9}
+                        style={{ display: "flex", flexDirection: "row" }}
                       >
-                        <input
-                          className="btn btn-default btn-primary"
-                          type="submit"
-                          value={"Chat"}
-                        />
-                      </ListItemButton>
-                    </Grid>
-                  </>
-                );
-            })
-          : "Please wait..."}
-      </Grid>
-    </Card>
+                        <ListItemAvatar>
+                          <Avatar
+                            style={{ backgroundColor: "#e78d13" }}
+                          ></Avatar>
+                        </ListItemAvatar>
+                        <div>
+                          {!addressonly && (
+                            <ListItemText primary={data?.name} />
+                          )}
+                          {!nameonly && (
+                            <p style={{ fontSize: 10 }}>{data?.addressId}</p>
+                          )}
+                        </div>
+                      </Grid>
+
+                      <Grid item xs={3} lg={3} md={3} sm={3}>
+                        <ListItemButton
+                          onClick={() => startChat(data?.name, data?.addressId)}
+                        >
+                          <input
+                            className="btn btn-default btn-primary"
+                            type="submit"
+                            value={"Chat"}
+                          />
+                        </ListItemButton>
+                      </Grid>
+                    </>
+                  );
+              })
+            : "Please wait..."}
+        </Grid>
+      </Card>
+    </div>
   );
 }

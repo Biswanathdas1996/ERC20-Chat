@@ -3,6 +3,7 @@ import { Grid } from "@mui/material";
 import { _fetch } from "../../ABI-connect/NFT-ABI/connect";
 import CurrentNFTCard from "../shared/CurrentNFTCard";
 import Loader from "../shared/Loader";
+import NoData from "../shared/NoData";
 
 const NftMarket = () => {
   const [token, setToken] = useState([]);
@@ -29,14 +30,19 @@ const NftMarket = () => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           style={{ padding: 10 }}
         >
-          {token?.map((data, index) => {
-            return (
-              <Grid item xs={12} sm={12} md={3} lg={3} key={index + "_nft"}>
-                <CurrentNFTCard data={data} fetchAllPosts={fetchAllPosts} />
-              </Grid>
-            );
-          })}
-          {token?.length === 0 && "No NFT cards found"}
+          {token?.length !== 0 ? (
+            token?.map((data, index) => {
+              return (
+                <Grid item xs={12} sm={12} md={3} lg={3} key={index + "_nft"}>
+                  <CurrentNFTCard data={data} fetchAllPosts={fetchAllPosts} />
+                </Grid>
+              );
+            })
+          ) : (
+            <Grid item xs={12} sm={12} md={3} lg={3} key={1}>
+              <NoData text="No NFT found" />
+            </Grid>
+          )}
         </Grid>
       )}
     </>
