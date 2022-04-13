@@ -102,8 +102,8 @@ const Mint = () => {
 
       <div>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={3}></Grid>
-          <Grid item xs={6}>
+          <Grid item lg={3} md={3} sm={12} xs={12}></Grid>
+          <Grid item lg={6} md={6} sm={12} xs={12}>
             <div style={{ margin: 20 }}>
               <Card>
                 <Grid container>
@@ -339,7 +339,7 @@ const Mint = () => {
               </Card>
             </div>
           </Grid>
-          <Grid item xs={3}></Grid>
+          <Grid item lg={3} md={3} sm={12} xs={12}></Grid>
         </Grid>
       </div>
     </>
