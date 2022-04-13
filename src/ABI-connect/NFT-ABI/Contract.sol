@@ -107,4 +107,11 @@ contract MyNFT is ERC721URIStorage, Ownable {
         return (royalty.recipient, (sellPrice * royalty.value) / 100);
     }
 
+    function getRoyeltyValue( uint tokenId) public view returns(uint amount){
+        
+        Royalty memory royalty = _royalties[tokenId];
+        return royalty.value;
+    }
+
+  
 }
