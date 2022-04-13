@@ -230,7 +230,7 @@ export default function PrimarySearchAppBar() {
             </Link>
             <Link to={"/event/my-account"}>
               <Button sx={{ my: 2, color: "white", display: "block" }}>
-                My Tickets
+                My Ticket
               </Button>
             </Link>
           </Box>
