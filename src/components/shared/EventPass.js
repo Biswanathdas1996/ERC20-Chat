@@ -13,21 +13,29 @@ import {
   _fetch,
   _account,
   _paid_transction,
+  _conveter,
 } from "../../ABI-connect/Event-Entry-Pass/connect";
 import TransctionModal from "../shared/TransctionModal";
+import TicketModalBody from "../shared/TicketModalBody";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-const VendorSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-});
+import Box from "@mui/material/Box";
+import Modal from "react-bootstrap/Modal";
 
-const NftCard = ({ data, baseExtention, symbol, cost }) => {
+const EventPass = ({ data, symbol }) => {
   const [baseExtentionData, setBaseExtentionData] = useState(null);
   const [owner, setOwner] = useState(null);
   const [start, setStart] = useState(false);
   const [account, setAccount] = React.useState(null);
   const [response, setResponse] = useState(null);
+  const [price, setPrice] = useState(null);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -35,11 +43,12 @@ const NftCard = ({ data, baseExtention, symbol, cost }) => {
     const account = await _account();
 
     setAccount(account);
-
-    await fetch(baseExtention)
+    const getPriceOfNft = await _fetch("getNftPrice", data);
+    setPrice(getPriceOfNft);
+    const getTokenURI = await _fetch("getTokenURI", data);
+    await fetch(getTokenURI)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setBaseExtentionData(data);
       });
 
@@ -49,7 +58,7 @@ const NftCard = ({ data, baseExtention, symbol, cost }) => {
 
   const buyNow = async () => {
     setStart(true);
-    const responseData = await _paid_transction(cost, "transferNFT", data);
+    const responseData = await _paid_transction(price, "transferNFT", data);
     setResponse(responseData);
     fetchData();
   };
@@ -62,6 +71,37 @@ const NftCard = ({ data, baseExtention, symbol, cost }) => {
   return (
     <>
       {start && <TransctionModal response={response} modalClose={modalClose} />}
+
+      <Modal
+        show={show}
+        onHide={handleClose}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        style={{ marginTop: 40 }}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{baseExtentionData?.name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <TicketModalBody data={baseExtentionData} price={price} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          {owner !== account && (
+            <Button
+              variant="contained"
+              style={{ width: "100% !important" }}
+              className="btn btn-default btn-primary"
+              onClick={() => buyNow()}
+            >
+              Buy Now
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>
 
       <Card style={{ marginTop: 20 }}>
         <CardHeader
@@ -77,7 +117,7 @@ const NftCard = ({ data, baseExtention, symbol, cost }) => {
         <CardMedia
           component="img"
           image={baseExtentionData?.image}
-          alt="Paella dish"
+          alt={baseExtentionData?.name}
           height="200"
           weidth="300"
         />
@@ -90,7 +130,7 @@ const NftCard = ({ data, baseExtention, symbol, cost }) => {
             </h5>
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <b style={{ fontSize: 20 }}>{cost / 1000000000000000000} ETH</b>
+            <b style={{ fontSize: 20 }}>{price / 1000000000000000000} ETH</b>
           </Typography>
         </CardContent>
         <CardActions style={{ padding: 20 }} disableSpacing>
@@ -104,9 +144,18 @@ const NftCard = ({ data, baseExtention, symbol, cost }) => {
               Buy Now
             </Button>
           )}
+
+          <Button
+            variant="contained"
+            style={{ width: "100% !important", marginLeft: 10 }}
+            className="btn btn-default btn-secondary"
+            onClick={handleShow}
+          >
+            Details
+          </Button>
         </CardActions>
       </Card>
     </>
   );
 };
-export default NftCard;
+export default EventPass;

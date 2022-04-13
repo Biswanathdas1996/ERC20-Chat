@@ -47,6 +47,14 @@ export const _account = async () => {
   return accounts[0];
 };
 
+export const _conveter = async (price, type) => {
+  if (type === "eth-to-wei") {
+    return await web3.utils.toWei(price.toString(), "ether");
+  } else {
+    return await web3.utils.fromWei(price.toString(), "ether");
+  }
+};
+
 export const _fetch = async (service, ...props) => {
   const callService = _.get(contract, ["methods", service]);
   let data;

@@ -8,15 +8,20 @@ import {
   _transction,
   _fetch,
   _account,
+  _conveter,
 } from "../../ABI-connect/Event-Entry-Pass/connect";
 import TransctionModal from "../shared/TransctionModal";
-import UpdatePrice from "./UpdatePrice";
+import Web3 from "web3";
+
+const web3 = new Web3(window.ethereum);
+
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const VendorSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   text: Yup.string().required("Text is required"),
   qty: Yup.string().required("qty is required"),
+  price: Yup.string().required("price is required"),
 });
 
 const Mint = () => {
@@ -41,7 +46,7 @@ const Mint = () => {
     setAccount(account);
   }
 
-  const saveData = async ({ name, text, qty, attributes }) => {
+  const saveData = async ({ name, text, qty, price, attributes }) => {
     setStart(true);
     let responseData;
     if (file) {
@@ -62,6 +67,7 @@ const Mint = () => {
       responseData = await _transction(
         "mintNFT",
         qty,
+        web3.utils.toWei(price.toString(), "ether"),
         `https://ipfs.infura.io/ipfs/${resultsSaveMetaData.path}`
       );
     }
@@ -114,6 +120,7 @@ const Mint = () => {
                           name: "",
                           text: "",
                           qty: "",
+                          price: "",
                           attributes: [
                             {
                               trait_type: "",
@@ -141,6 +148,23 @@ const Mint = () => {
                                 placeholder="Enter qty"
                                 className={`form-control text-muted ${
                                   touched.qty && errors.qty ? "is-invalid" : ""
+                                }`}
+                                style={{ marginRight: 10, padding: 9 }}
+                              />
+                            </div>
+                            <div
+                              className="form-group"
+                              style={{ marginLeft: 10, marginTop: 10 }}
+                            >
+                              <Field
+                                type="number"
+                                name="price"
+                                autoComplete="flase"
+                                placeholder="Enter price (ETH)"
+                                className={`form-control text-muted ${
+                                  touched.price && errors.price
+                                    ? "is-invalid"
+                                    : ""
                                 }`}
                                 style={{ marginRight: 10, padding: 9 }}
                               />
@@ -313,9 +337,6 @@ const Mint = () => {
                   </Grid>
                 </Grid>
               </Card>
-            </div>
-            <div style={{ margin: 20 }}>
-              <UpdatePrice />
             </div>
           </Grid>
           <Grid item xs={3}></Grid>

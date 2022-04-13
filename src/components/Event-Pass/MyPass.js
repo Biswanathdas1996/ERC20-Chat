@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 import { _fetch, _account } from "../../ABI-connect/Event-Entry-Pass/connect";
-import NftCard from "../shared/EventPass";
+import EventPass from "../shared/EventPass";
 import Loader from "../shared/Loader";
 import NoData from "../shared/NoData";
 
 const MyPass = () => {
   const [token, setToken] = useState([]);
-  const [baseExtention, setBaseExtention] = useState(null);
   const [symbol, setSymbol] = useState(null);
-  const [cost, setCost] = useState(null);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     fetchAllPosts();
   }, []);
@@ -19,13 +18,11 @@ const MyPass = () => {
     setLoading(true);
     const symbol = await _fetch("symbol");
     setSymbol(symbol);
-    const cost = await _fetch("cost");
-    setCost(cost);
+
     const owner = await _account();
     const getAllToken = await _fetch("walletOfOwner", owner);
     setToken(getAllToken);
-    const getBaseExtention = await _fetch("baseExtension");
-    setBaseExtention(getBaseExtention);
+
     setLoading(false);
   }
 
@@ -44,14 +41,7 @@ const MyPass = () => {
             token?.map((data, index) => {
               return (
                 <Grid item xs={12} sm={12} md={3} lg={3} key={index + "_nft"}>
-                  {baseExtention && (
-                    <NftCard
-                      data={data}
-                      baseExtention={baseExtention}
-                      symbol={symbol}
-                      cost={cost}
-                    />
-                  )}
+                  <EventPass data={data} symbol={symbol} />
                 </Grid>
               );
             })

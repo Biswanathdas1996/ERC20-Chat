@@ -54,6 +54,14 @@ body {
   width: 8rem !important;
 }
 
+.btn-secondary {
+  color: #fff !important;
+  background-color: rgb(229 114 0 / 94%) !important;
+  border-color: rgb(229 114 0 / 94%) !important;
+  padding: 10px !important;
+  width: 8rem !important;
+}
+
 /*!
  * Load Awesome v1.1.0 (http://github.danielcardoso.net/load-awesome/)
  * Copyright 2015 Daniel Cardoso <@DanielCardoso>
