@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH= 	/home/sosalin/public_html/
-    - /bin/cp -R build $DEPLOYPATH
+    - /bin/cp * $DEPLOYPATH
