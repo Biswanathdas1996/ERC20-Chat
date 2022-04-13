@@ -24,9 +24,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Web3 from "web3";
+const web3 = new Web3(window.ethereum);
 
 const VendorSchema = Yup.object().shape({
   sendTo: Yup.string().required("Send address is required"),
+});
+const PriceVendorSchema = Yup.object().shape({
+  price: Yup.string().required("Send address is required"),
 });
 
 const Timeline = () => {
@@ -35,6 +40,9 @@ const Timeline = () => {
   const [account, setAccount] = useState(null);
   const [start, setStart] = useState(false);
   const [response, setResponse] = useState(null);
+  const [price, setPriceValue] = useState(null);
+  const [royelty, setRoyelty] = useState(null);
+  const [author, setAuthor] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
@@ -44,6 +52,8 @@ const Timeline = () => {
   async function fetchAllPosts() {
     const getAllTokenUri = await _fetch("tokenURI", id);
     const getOwner = await _fetch("ownerOf", id);
+    const getRoyeltyValue = await _fetch("getRoyeltyValue", id);
+    setRoyelty(getRoyeltyValue);
     setOwner(getOwner);
     await fetch(getAllTokenUri)
       .then((response) => response.json())
@@ -53,12 +63,25 @@ const Timeline = () => {
       });
     const currentAccount = await _account();
     setAccount(currentAccount);
+    const price = await _fetch("getNftPrice", id);
+    setPriceValue(price);
   }
 
   const saveData = async ({ sendTo }) => {
     setStart(true);
     console.log(owner, sendTo, id);
     const responseData = await _transction("transferFrom", owner, sendTo, id);
+    setResponse(responseData);
+    fetchAllPosts();
+  };
+
+  const setPrice = async ({ price }) => {
+    setStart(true);
+    const responseData = await _transction(
+      "_setNftPrice",
+      id,
+      web3.utils.toWei(price.toString(), "ether")
+    );
     setResponse(responseData);
     fetchAllPosts();
   };
@@ -95,8 +118,21 @@ const Timeline = () => {
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   <b style={{ color: "#7c007c" }}>
-                    Owner: {account === owner ? "You own this token" : owner}
+                    <h3>
+                      {price && web3.utils.fromWei(price.toString(), "ether")}{" "}
+                      ETH
+                    </h3>
                   </b>
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  <b style={{ color: "#7c007c" }}>
+                    Current Owner:{" "}
+                    {account === owner ? "You own this token" : owner}
+                  </b>
+                </Typography>
+
+                <Typography variant="body2" color="text.secondary">
+                  Author will get royelty of {royelty}%.
                 </Typography>
                 <br />
                 <Typography variant="body2" color="text.secondary">
@@ -137,6 +173,51 @@ const Timeline = () => {
           <Card style={{ padding: 20 }}>
             <Formik
               initialValues={{
+                price: "",
+              }}
+              validationSchema={PriceVendorSchema}
+              onSubmit={(values, { setSubmitting }) => {
+                setPrice(values);
+                setSubmitting(false);
+              }}
+            >
+              {({ touched, errors, isSubmitting }) => (
+                <Form>
+                  <h4>Update Price</h4>
+                  <div
+                    className="form-group"
+                    style={{ marginLeft: 10, marginTop: 10 }}
+                  >
+                    <Field
+                      type="number"
+                      name="price"
+                      autoComplete="flase"
+                      placeholder="Enter price in ETH"
+                      className={`form-control text-muted ${
+                        touched.price && errors.price ? "is-invalid" : ""
+                      }`}
+                      style={{ marginRight: 10, padding: 9 }}
+                      disabled={account !== owner}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <span className="input-group-btn">
+                      <input
+                        className="btn btn-default btn-primary"
+                        type="submit"
+                        value={"Update"}
+                        disabled={account !== owner}
+                      />
+                    </span>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </Card>
+          <Card style={{ padding: 20, marginTop: 20 }}>
+            <Formik
+              initialValues={{
                 sendTo: "",
               }}
               validationSchema={VendorSchema}
@@ -147,6 +228,7 @@ const Timeline = () => {
             >
               {({ touched, errors, isSubmitting }) => (
                 <Form>
+                  <h4>Transfer </h4>
                   <div
                     className="form-group"
                     style={{ marginLeft: 10, marginTop: 10 }}

@@ -1,49 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { Grid } from "@mui/material";
 import { _fetch } from "../../ABI-connect/NFT-ABI/connect";
 import CurrentNFTCard from "../shared/CurrentNFTCard";
+import Loader from "../shared/Loader";
 
-const useStyles = makeStyles(({ palette, ...theme }) => ({
-  cardHolder: {
-    background: "#f3f3f4",
-    overflow: "auto",
-  },
-}));
-
-const Timeline = () => {
-  const classes = useStyles();
+const NftMarket = () => {
   const [token, setToken] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchAllPosts();
   }, []);
 
   async function fetchAllPosts() {
+    setLoading(true);
     const getAllToken = await _fetch("getToken");
+    setLoading(false);
     setToken(getAllToken);
   }
 
   return (
     <>
-      <div className={classes.cardHolder}>
+      {loading ? (
+        <Loader />
+      ) : (
         <Grid
           container
           rowSpacing={1}
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          style={{ padding: 20 }}
+          style={{ padding: 10 }}
         >
           {token?.map((data, index) => {
             return (
               <Grid item xs={12} sm={12} md={3} lg={3} key={index + "_nft"}>
-                <CurrentNFTCard data={data} />
+                <CurrentNFTCard data={data} fetchAllPosts={fetchAllPosts} />
               </Grid>
             );
           })}
+          {token?.length === 0 && "No NFT cards found"}
         </Grid>
-      </div>
+      )}
     </>
   );
 };
-export default Timeline;
+export default NftMarket;
