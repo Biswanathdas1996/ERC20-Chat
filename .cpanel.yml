@@ -1,5 +1,9 @@
 ---
 deployment:
+  script: |
+    npm install
+    npm run build
+  displayName: "npm install and build"
   tasks:
     - export DEPLOYPATH=/home/sosalin/public_html/
     - /bin/cp -R build/assets $DEPLOYPATH
