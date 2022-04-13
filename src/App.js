@@ -16,6 +16,8 @@ import CreatePass from "./components/Event-Pass/CreatePass";
 import ListAllPass from "./components/Event-Pass/ListAllPass";
 import MyPass from "./components/Event-Pass/MyPass";
 
+import Layout from "./components/Layout";
+
 export const AccountContest = React.createContext("light");
 
 const isEthEnebled = window?.ethereum?.request({
@@ -26,21 +28,27 @@ const App = () => {
   if (isEthEnebled) {
     return (
       <>
-        <NavigationBar />
-        <Routes>
-          <Route path="/" element={<Timeline />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/register" element={<Registration />} />
-          <Route path="/users" element={<UserList />} />
-          <Route path="/nft-mint" element={<Mint />} />
-          <Route path="/nft-market" element={<NftMarket />} />
-          <Route path="/my-nft" element={<MyNft />} />
-          <Route path="/nft-details/:id" element={<NftDetails />} />
+        {/* <NavigationBar /> */}
+        <Layout
+          body={() => {
+            return (
+              <Routes>
+                <Route path="/" element={<Timeline />} />
+                <Route path="/chat" element={<Chat />} />
+                <Route path="/register" element={<Registration />} />
+                <Route path="/users" element={<UserList />} />
+                <Route path="/nft-mint" element={<Mint />} />
+                <Route path="/nft-market" element={<NftMarket />} />
+                <Route path="/my-nft" element={<MyNft />} />
+                <Route path="/nft-details/:id" element={<NftDetails />} />
 
-          <Route path="/event/create" element={<CreatePass />} />
-          <Route path="/event/all" element={<ListAllPass />} />
-          <Route path="/event/my-account" element={<MyPass />} />
-        </Routes>
+                <Route path="/event/create" element={<CreatePass />} />
+                <Route path="/event/all" element={<ListAllPass />} />
+                <Route path="/event/my-account" element={<MyPass />} />
+              </Routes>
+            );
+          }}
+        />
       </>
     );
   } else {

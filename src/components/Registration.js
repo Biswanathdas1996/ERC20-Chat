@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useState } from "react";
 
 import swal from "sweetalert";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -7,25 +6,14 @@ import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 
-import { _transction, _fetch } from "../ABI-connect/MessangerABI/connect";
+import { _transction } from "../ABI-connect/MessangerABI/connect";
 import TransctionModal from "./shared/TransctionModal";
-
-const useStyles = makeStyles(({ palette, ...theme }) => ({
-  cardHolder: {
-    background: "#f3f3f4",
-    alignItems: "center",
-    height: "90vh",
-    overflow: "auto",
-  },
-}));
 
 const VendorSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
 });
 
 const Registration = () => {
-  const classes = useStyles();
-
   const [start, setStart] = useState(false);
   const [response, setResponse] = useState(null);
   const submitForm = async (name) => {
@@ -50,15 +38,6 @@ const Registration = () => {
     });
   };
 
-  useEffect(() => {
-    fetchStudentData();
-  }, []);
-
-  async function fetchStudentData() {
-    const students = await _fetch("getAllUsers");
-    console.log("--------->", students);
-  }
-
   const modalClose = () => {
     setStart(false);
     setResponse(null);
@@ -67,9 +46,9 @@ const Registration = () => {
     <>
       {start && <TransctionModal response={response} modalClose={modalClose} />}
 
-      <div className={classes.cardHolder}>
+      <div>
         <div>
-          <Card className={classes.card}>
+          <Card>
             <Grid container>
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <Typography

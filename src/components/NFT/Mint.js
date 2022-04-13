@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
-import Box from "@mui/material/Box";
+
 import { _transction } from "../../ABI-connect/NFT-ABI/connect";
 import TransctionModal from "../shared/TransctionModal";
 import { create } from "ipfs-http-client";
@@ -13,13 +13,6 @@ const web3 = new Web3(window.ethereum);
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
-const useStyles = makeStyles(({ palette, ...theme }) => ({
-  cardHolder: {
-    background: "#f3f3f4",
-    overflow: "auto",
-  },
-}));
-
 const VendorSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   text: Yup.string().required("Text is required"),
@@ -28,8 +21,6 @@ const VendorSchema = Yup.object().shape({
 });
 
 const Mint = () => {
-  const classes = useStyles();
-
   const [start, setStart] = useState(false);
   const [response, setResponse] = useState(null);
   const [file, setFile] = useState(null);
@@ -91,12 +82,12 @@ const Mint = () => {
     <>
       {start && <TransctionModal response={response} modalClose={modalClose} />}
 
-      <div className={classes.cardHolder}>
+      <div>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={3}></Grid>
           <Grid item xs={6}>
             <div style={{ margin: 20 }}>
-              <Card className={classes.card}>
+              <Card>
                 <Grid container>
                   <Grid item lg={12} md={12} sm={12} xs={12}>
                     <div

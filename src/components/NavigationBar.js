@@ -17,7 +17,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { _fetch, _account } from "../ABI-connect/MessangerABI/connect";
-
+import { useNavigate } from "react-router-dom";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -61,6 +61,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [account, setAccount] = React.useState(null);
   const [accountBalace, setAccountBalace] = React.useState(null);
+  let history = useNavigate();
 
   async function fetchUserData() {
     const account = await _account();
@@ -114,6 +115,14 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          history("/event/create");
+        }}
+      >
+        <b>Create Tickets</b>
+      </MenuItem>
       <MenuItem onClick={handleMenuClose}>{account}</MenuItem>
     </Menu>
   );
@@ -154,7 +163,7 @@ export default function PrimarySearchAppBar() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>Profiles</p>
       </MenuItem>
     </Menu>
   );

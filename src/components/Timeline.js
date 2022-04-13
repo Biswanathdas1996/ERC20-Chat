@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
@@ -16,20 +16,11 @@ import UserList from "./UserList";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
-const useStyles = makeStyles(({ palette, ...theme }) => ({
-  cardHolder: {
-    background: "#f3f3f4",
-    overflow: "auto",
-  },
-}));
-
 const VendorSchema = Yup.object().shape({
   text: Yup.string().required("Text is required"),
 });
 
 const Timeline = () => {
-  const classes = useStyles();
-
   const [start, setStart] = useState(false);
   const [response, setResponse] = useState(null);
   const [messages, setMessages] = useState(null);
@@ -86,10 +77,7 @@ const Timeline = () => {
     <>
       {start && <TransctionModal response={response} modalClose={modalClose} />}
 
-      <div
-        className={classes.cardHolder}
-        style={{ padding: 20, background: "#f3f3f4" }}
-      >
+      <div style={{ padding: 20, background: "#f3f3f4" }}>
         <Grid
           container
           rowSpacing={1}
@@ -97,7 +85,7 @@ const Timeline = () => {
           style={{ marginBottom: 20 }}
         >
           <Grid item xs={12} lg={7} md={7} sm={12}>
-            <Card className={classes.card}>
+            <Card>
               <div style={{ padding: 20, marginLeft: 20 }}>
                 <Formik
                   initialValues={{

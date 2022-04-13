@@ -15,24 +15,9 @@ import ShareIcon from "@mui/icons-material/Share";
 import DescriptionIcon from "@mui/icons-material/Description";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
-
 export default function RecipeReviewCard({ data }) {
-  const [expanded, setExpanded] = React.useState(false);
   const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
   const validVideoeTypes = ["video/mp4"];
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   return (
     <Card style={{ marginTop: 20 }}>

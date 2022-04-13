@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
@@ -17,22 +17,11 @@ import { useNavigate } from "react-router-dom";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
-const useStyles = makeStyles(({ palette, ...theme }) => ({
-  cardHolder: {
-    background: "#f3f3f4",
-    alignItems: "center",
-    height: "90vh",
-    overflow: "auto",
-  },
-}));
-
 const VendorSchema = Yup.object().shape({
   text: Yup.string().required("Text is required"),
 });
 
 const Chat = () => {
-  const classes = useStyles();
-
   const [start, setStart] = useState(false);
   const [response, setResponse] = useState(null);
   const [messages, setMessages] = useState(null);
@@ -188,7 +177,7 @@ const Chat = () => {
     <>
       {start && <TransctionModal response={response} modalClose={modalClose} />}
 
-      <div className={classes.cardHolder}>
+      <div>
         <Typography
           style={{ marginLeft: "15px", marginTop: "10px", padding: 3 }}
           component="h1"
@@ -249,7 +238,7 @@ const Chat = () => {
         </center>
         {/* ///msg submit form */}
         <div>
-          <Card className={classes.card}>
+          <Card>
             <Grid container>
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <div
