@@ -27,6 +27,7 @@ import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
+import VoiceFile from "./VoiceFile/Create";
 import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
@@ -131,6 +132,7 @@ export default function Layout({ body }) {
   return (
     <Box style={{ backgroundColor: "#f3f3f4" }}>
       <CssBaseline />
+
       <AppBar
         position="fixed"
         open={open}
@@ -138,19 +140,25 @@ export default function Layout({ body }) {
       >
         <Toolbar>
           <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            size="large"
             edge="start"
-            sx={{ mr: 2, ...(open && { display: "none" }) }}
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={handleDrawerOpen}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             SOSAL
           </Typography>
+
+          <div>
+            <VoiceFile />
+          </div>
         </Toolbar>
       </AppBar>
+
       <Drawer
         sx={{
           width: drawerWidth,

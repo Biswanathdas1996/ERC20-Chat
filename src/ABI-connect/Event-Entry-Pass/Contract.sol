@@ -1,5 +1,6 @@
 pragma solidity >=0.7.0 <0.9.0;
 
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -8,12 +9,20 @@ contract NFT is ERC721Enumerable, Ownable {
 
   string baseURI;
   string public baseExtension = ".json";
-  uint256 public cost = 0.05 ether;
   uint256 public maxSupply = 10000;
-  uint256 public maxMintAmount = 20;
+  
   bool public paused = false;
   bool public revealed = false;
   string public notRevealedUri;
+
+  struct Price {
+        uint256 amount;
+  }
+
+     
+  mapping(uint256 => Price) internal _prices;
+
+  mapping (uint256 => string) private _tokenURIs;
 
   constructor(
     string memory _name,
@@ -30,25 +39,67 @@ contract NFT is ERC721Enumerable, Ownable {
     return baseURI;
   }
 
+   function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual {
+        require(_exists(tokenId), "ERC721Metadata: URI set of nonexistent token");
+        _tokenURIs[tokenId] = _tokenURI;
+    }
+
   // public
-  function mintNFT(uint256 _mintAmount) public {
+  function mintNFT(uint256 _mintQty, uint price, string memory tokenURI) public {
     uint256 supply = totalSupply();
     require(!paused);
-    require(_mintAmount > 0);
-    require(_mintAmount <= maxMintAmount);
-    require(supply + _mintAmount <= maxSupply);
-
+    require(_mintQty > 0);
     
+    require(supply + _mintQty <= maxSupply);
 
-    for (uint256 i = 1; i <= _mintAmount; i++) {
-      _safeMint(msg.sender, supply + i);
+    for (uint256 i = 1; i <= _mintQty; i++) {
+       uint tokenID = supply + i;
+      _safeMint(msg.sender, tokenID);
+      setNFTPrice(tokenID, price);
+      _setTokenURI(tokenID, tokenURI);
     }
+    
+    // setBaseExtension(tokenURI);
+    // setBaseURI(tokenURI);
+    // setNotRevealedURI(tokenURI);
   }
 
-  function transferNFT(address from, uint tokenId) public payable{
-   require(msg.value >= cost);
-   transferFrom(from,msg.sender,tokenId);
+
+  function setNFTPrice(
+        uint256 token,
+        uint amount
+    ) public {
+        _prices[token] = Price(amount);
   }
+
+  function getNftPrice(uint tokenId)
+        public
+        view
+        returns (uint amount)
+  {
+      Price memory priceData = _prices[tokenId];
+      return priceData.amount;
+  }
+
+  function getTokenURI(uint tokenId)
+        public
+        view
+        returns (string memory tokenUri)
+  {
+      string memory tokenUriInfo = _tokenURIs[tokenId];
+      return tokenUriInfo;
+  }
+
+
+  function transferNFT(uint tokenId) public payable{
+    uint nftCost=getNftPrice(tokenId);
+    require(msg.value >= nftCost);
+    address payable contractOwnerAddress = payable(owner());
+    contractOwnerAddress.transfer(msg.value);
+    _transfer(contractOwnerAddress,msg.sender,tokenId);
+  }
+
+  
 
   function walletOfOwner(address _owner)
     public
@@ -90,13 +141,8 @@ contract NFT is ERC721Enumerable, Ownable {
       revealed = true;
   }
   
-  function setCost(uint256 _newCost) public onlyOwner {
-    cost = _newCost;
-  }
-
-  function setmaxMintAmount(uint256 _newmaxMintAmount) public onlyOwner {
-    maxMintAmount = _newmaxMintAmount;
-  }
+  
+  
   
   function setNotRevealedURI(string memory _notRevealedURI) public onlyOwner {
     notRevealedUri = _notRevealedURI;

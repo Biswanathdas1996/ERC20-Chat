@@ -16,6 +16,8 @@ import CreatePass from "./components/Event-Pass/CreatePass";
 import ListAllPass from "./components/Event-Pass/ListAllPass";
 import MyPass from "./components/Event-Pass/MyPass";
 
+import CreateVoiceFile from "./components/VoiceFile/Create";
+
 import Layout from "./components/Layout";
 
 export const AccountContest = React.createContext("light");
@@ -45,6 +47,8 @@ const App = () => {
                 <Route path="/event/create" element={<CreatePass />} />
                 <Route path="/event/all" element={<ListAllPass />} />
                 <Route path="/event/my-account" element={<MyPass />} />
+
+                <Route path="/voice" element={<CreateVoiceFile />} />
               </Routes>
             );
           }}
