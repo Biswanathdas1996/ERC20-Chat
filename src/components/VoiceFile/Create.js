@@ -8,6 +8,8 @@ import _ from "lodash";
 import { TextData } from "./FunctionalTexts";
 import StringSimilarity from "string-similarity";
 import { useNavigate } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+import CampaignIcon from "@mui/icons-material/Campaign";
 
 const VoiceFile = () => {
   const {
@@ -16,25 +18,35 @@ const VoiceFile = () => {
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
+
   let history = useNavigate();
+
   useEffect(() => {
-    const search = TextData?.map((data) => {
-      return {
-        nav: data?.nav,
-        score: StringSimilarity.compareTwoStrings(data?.text, transcript),
-      };
-    });
-
-    const shortScore = search.sort(function (a, b) {
-      return b?.score - a?.score;
-    });
-    debounce_fun(shortScore[0]?.nav);
-    console.log("====>", shortScore[0]?.nav);
-  }, [transcript]);
-
-  const debounce_fun = _.debounce(function (link) {
     if (transcript) {
-      history(link);
+      debounce_fun(transcript);
+    }
+  }, [transcript]);
+  // throttle
+  const debounce_fun = _.debounce(function (transcript) {
+    if (transcript) {
+      const search = TextData?.map((data) => {
+        return {
+          nav: data?.nav,
+          score: StringSimilarity.compareTwoStrings(data?.text, transcript),
+        };
+      });
+
+      const shortScore = search.sort(function (a, b) {
+        return b?.score - a?.score;
+      });
+
+      console.log("--->", transcript, shortScore);
+
+      if (shortScore[0]?.score > 0) {
+        resetTranscript();
+        history(shortScore[0]?.nav);
+      } else {
+      }
     }
 
     // return;
@@ -50,7 +62,10 @@ const VoiceFile = () => {
       <button onClick={SpeechRecognition.startListening}>Start</button>
        <button onClick={resetTranscript}>Reset</button>
       <button onClick={SpeechRecognition.stopListening}>Stop</button> */}
-      <p>{transcript}</p>
+
+      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        {transcript}
+      </Typography>
       <IconButton
         size="large"
         aria-label="account of current user"
@@ -59,7 +74,7 @@ const VoiceFile = () => {
         color="inherit"
         onClick={SpeechRecognition.startListening}
       >
-        <MicIcon />
+        {!listening ? <MicIcon /> : <CampaignIcon />}
       </IconButton>
 
       {/* <p>{transcript}</p> */}

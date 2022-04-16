@@ -46,7 +46,7 @@ const App = () => {
 
                 <Route path="/event/create" element={<CreatePass />} />
                 <Route path="/event/all" element={<ListAllPass />} />
-                <Route path="/event/my-account" element={<MyPass />} />
+                <Route path="/event/my-tickets" element={<MyPass />} />
 
                 <Route path="/voice" element={<CreateVoiceFile />} />
               </Routes>

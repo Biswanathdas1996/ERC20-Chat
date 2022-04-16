@@ -107,7 +107,7 @@ const menuTickets = [
   },
   {
     title: "My Ticket",
-    link: "/event/my-account",
+    link: "/event/my-tickets",
     icon: () => <FactCheckIcon />,
   },
 ];
@@ -153,9 +153,7 @@ export default function Layout({ body }) {
             SOSAL
           </Typography>
 
-          <div>
-            <VoiceFile />
-          </div>
+          <VoiceFile />
         </Toolbar>
       </AppBar>
 
