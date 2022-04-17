@@ -4,11 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
-import {
-  _transction,
-  _fetch,
-  _account,
-} from "../ABI-connect/MessangerABI/connect";
+import { connect } from "./Test";
+
 import TransctionModal from "./shared/TransctionModal";
 import { create } from "ipfs-http-client";
 import PostCard from "./shared/PostCard";
@@ -32,14 +29,18 @@ const Timeline = () => {
     if (file) {
       const results = await client.add(file);
       console.log(results.path);
-      responseData = await _transction(
-        "postStory",
-        text,
-        `https://ipfs.io/ipfs/${results.path}`,
-        file.type
+      responseData = await connect.then(({ _transction }) =>
+        _transction(
+          "postStory",
+          text,
+          `https://ipfs.io/ipfs/${results.path}`,
+          file.type
+        )
       );
     } else {
-      responseData = await _transction("postStory", text, "null", "null");
+      responseData = await connect.then(({ _transction }) =>
+        _transction("postStory", text, "null", "null")
+      );
     }
     setResponse(responseData);
     fetchAllPosts();
@@ -58,7 +59,9 @@ const Timeline = () => {
   }
 
   async function fetchAllPosts() {
-    const getAllPosts = await _fetch("getAllposts");
+    const getAllPosts = await connect.then(({ _fetch }) =>
+      _fetch("getAllposts")
+    );
 
     setMessages(reverseArr(getAllPosts));
   }
