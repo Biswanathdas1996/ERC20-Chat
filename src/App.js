@@ -20,6 +20,8 @@ import CreateVoiceFile from "./components/VoiceFile/Create";
 
 import Layout from "./components/Layout";
 
+import Users from "./components/Encrtption/Users";
+
 export const AccountContest = React.createContext("light");
 
 const isEthEnebled = window?.ethereum?.request({
@@ -49,6 +51,8 @@ const App = () => {
                 <Route path="/event/my-tickets" element={<MyPass />} />
 
                 <Route path="/voice" element={<CreateVoiceFile />} />
+
+                <Route path="/encrypt/users" element={<Users />} />
               </Routes>
             );
           }}

@@ -45,11 +45,10 @@ const VoiceFile = () => {
       if (shortScore[0]?.score > 0) {
         resetTranscript();
         history(shortScore[0]?.nav);
+        return;
       } else {
       }
     }
-
-    // return;
   }, 2000);
 
   if (!browserSupportsSpeechRecognition) {
