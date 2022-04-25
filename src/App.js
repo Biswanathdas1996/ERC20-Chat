@@ -6,6 +6,7 @@ import Chat from "./components/Chat";
 import NavigationBar from "./components/NavigationBar";
 import UserList from "./components/UserList";
 import Timeline from "./components/Timeline";
+import TimelineNew from "./components/Timeline-2";
 import Mint from "./components/NFT/Mint";
 import NftMarket from "./components/NFT/NftMarket";
 import MyNft from "./components/NFT/MyNft";
@@ -37,7 +38,7 @@ const App = () => {
           body={() => {
             return (
               <Routes>
-                <Route path="/" element={<Timeline />} />
+                <Route path="/" element={<TimelineNew />} />
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/register" element={<Registration />} />
                 <Route path="/users" element={<UserList />} />

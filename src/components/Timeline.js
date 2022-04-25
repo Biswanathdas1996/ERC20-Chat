@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
-
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
-import { connect } from "./Test";
-
 import TransctionModal from "./shared/TransctionModal";
 import { create } from "ipfs-http-client";
 import PostCard from "./shared/PostCard";
 import UserList from "./UserList";
+
+import CONTRACT_ABI from "../ABI-connect/MessangerABI/ABI.json";
+import Connect from "web3-access";
+
+const CONTRACT_ADDRESS = "0x75BD88C96618353B88588A0217258E3954140fe7";
+// useing web3-access
+const connect = Connect(CONTRACT_ABI, CONTRACT_ADDRESS);
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -62,7 +66,7 @@ const Timeline = () => {
     const getAllPosts = await connect.then(({ _fetch }) =>
       _fetch("getAllposts")
     );
-
+    console.log("----------->", getAllPosts);
     setMessages(reverseArr(getAllPosts));
   }
 
