@@ -2,21 +2,46 @@ import _ from "lodash";
 import Web3 from "web3";
 import ABI from "./ABI.json";
 import ADDRESS from "./Address.json";
+import { WalletPrivateKey, InfuraNodeURL } from "../../config";
+import { decode } from "js-base64";
 
-window?.ethereum?.request({
-  method: "eth_requestAccounts",
-});
-
-const web3 = new Web3(window.ethereum);
+const web3 = new Web3(new Web3.providers.HttpProvider(InfuraNodeURL));
+const signer = web3.eth.accounts.privateKeyToAccount(WalletPrivateKey);
+web3.eth.accounts.wallet.add(signer);
 const contract = new web3.eth.Contract(ABI, ADDRESS);
 
 export const _transction = async (service, ...props) => {
   const callService = _.get(contract, ["methods", service]);
-  const accounts = await web3.eth.getAccounts();
+
+  const tx = callService(...props);
+
+  const responseData = await tx
+    .send({
+      from: signer.address,
+      // gas: await tx.estimateGas(),
+      gas: "4700000",
+      value: 0,
+    })
+    // .then((data) => data)
+    .once("transactionHash", (txhash) => {
+      console.log(`Mining transaction ...`);
+      console.log(txhash);
+      return txhash;
+    })
+    .catch((error) => {
+      const errorData = { error };
+      return { error: errorData.error };
+    });
+  return responseData;
+};
+
+export const _paid_transction = async (cost, service, ...props) => {
+  const callService = _.get(contract, ["methods", service]);
+
   const responseData = await callService(...props)
     .send({
-      from: accounts[0],
-      value: 0,
+      from: signer.address,
+      value: cost,
     })
     .then((data) => data)
     .catch((error) => {
@@ -27,8 +52,12 @@ export const _transction = async (service, ...props) => {
 };
 
 export const _account = async () => {
-  const accounts = await web3.eth.getAccounts();
-  return accounts[0];
+  const uid = localStorage.getItem("uid");
+  if (uid) {
+    return decode(uid);
+  } else {
+    return null;
+  }
 };
 
 export const _fetch = async (service, ...props) => {

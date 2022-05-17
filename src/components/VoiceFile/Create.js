@@ -52,7 +52,7 @@ const VoiceFile = () => {
   }, 2000);
 
   if (!browserSupportsSpeechRecognition) {
-    return <span>Browser doesn't support speech recognition.</span>;
+    return <span></span>;
   }
 
   return (

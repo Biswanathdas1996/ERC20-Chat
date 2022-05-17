@@ -288,3 +288,10 @@ body {
     transform: translate(-50%, -50%) scale(0.15);
   }
 }
+
+.project-name {
+  background: linear-gradient(to right, #30cfd0 0%, #330867 100%);
+  font-weight: bold;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

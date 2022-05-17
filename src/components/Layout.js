@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -26,9 +26,12 @@ import FactCheckIcon from "@mui/icons-material/FactCheck";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-
+import { Avatar } from "@mui/material";
+import { AccountContext } from "../App";
+import { Button } from "@mui/material";
 import VoiceFile from "./VoiceFile/Create";
 import { useNavigate } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
 
@@ -116,6 +119,7 @@ export default function Layout({ body }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   let history = useNavigate();
+  const { account, fetchUserData } = useContext(AccountContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -129,6 +133,13 @@ export default function Layout({ body }) {
     handleDrawerClose();
     history(link);
   };
+
+  const logout = () => {
+    localStorage.clear();
+    fetchUserData();
+    history("/login");
+    return;
+  };
   return (
     <Box style={{ backgroundColor: "#f3f3f4" }}>
       <CssBaseline />
@@ -136,7 +147,7 @@ export default function Layout({ body }) {
       <AppBar
         position="fixed"
         open={open}
-        style={{ backgroundColor: "rgb(124 0 124)", color: "#fff" }}
+        style={{ backgroundColor: "white", color: "#5a5a5a" }}
       >
         <Toolbar>
           <IconButton
@@ -149,11 +160,41 @@ export default function Layout({ body }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            SOSAL
+          <div className="project-name">SOSAL</div>
+          <Typography
+            className="project-name"
+            sx={{ flexGrow: 1, marginLeft: 1, fontSize: 7 }}
+          >
+            WeB 3.0
           </Typography>
 
           <VoiceFile />
+
+          {account?.name && (
+            <>
+              <Avatar
+                alt="Remy Sharp"
+                sx={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: "50%",
+                }}
+                src={account?.profileImg}
+              ></Avatar>
+              <p style={{ color: "black", margin: 10, fontWeight: "bold" }}>
+                {account?.name}
+              </p>
+              <Button
+                aria-controls={`ewrwr`}
+                variant="outlined"
+                sx={{ textTransform: "none" }}
+                style={{ marginLeft: 10 }}
+                onClick={() => logout()}
+              >
+                <LogoutIcon />
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
 

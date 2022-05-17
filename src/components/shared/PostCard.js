@@ -62,7 +62,7 @@ export default function RecipeReviewCard({ data }) {
 
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {data?.text}
+          <div dangerouslySetInnerHTML={{ __html: data?.text }}></div>
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

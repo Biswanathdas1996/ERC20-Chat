@@ -1,3 +1,4 @@
+/* eslint-disable no-array-constructor */
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
@@ -7,18 +8,18 @@ import TransctionModal from "./shared/TransctionModal";
 import { create } from "ipfs-http-client";
 import PostCard from "./shared/PostCard";
 import UserList from "./UserList";
+import {
+  _transction,
+  _fetch,
+  _account,
+} from "../ABI-connect/MessangerABI/connect";
 
-import CONTRACT_ABI from "../ABI-connect/MessangerABI/ABI.json";
-import Connect from "web3-access";
-
-const CONTRACT_ADDRESS = "0x75BD88C96618353B88588A0217258E3954140fe7";
-// useing web3-access
-const connect = Connect(CONTRACT_ABI, CONTRACT_ADDRESS);
+import TextEditor from "./UI/Editor";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const VendorSchema = Yup.object().shape({
-  text: Yup.string().required("Text is required"),
+  // text: Yup.string().required("Text is required"),
 });
 
 const Timeline = () => {
@@ -26,25 +27,23 @@ const Timeline = () => {
   const [response, setResponse] = useState(null);
   const [messages, setMessages] = useState(null);
   const [file, setFile] = useState(null);
+  const [htmlCode, setHtmlCode] = useState(null);
 
   const saveData = async ({ text }) => {
     setStart(true);
     let responseData;
     if (file) {
       const results = await client.add(file);
+      // const saveHtmlDescription = await client.add(htmlCode);
       console.log(results.path);
-      responseData = await connect.then(({ _transction }) =>
-        _transction(
-          "postStory",
-          text,
-          `https://ipfs.io/ipfs/${results.path}`,
-          file.type
-        )
+      responseData = await _transction(
+        "postStory",
+        JSON.stringify(htmlCode),
+        `https://ipfs.io/ipfs/${results.path}`,
+        file.type
       );
     } else {
-      responseData = await connect.then(({ _transction }) =>
-        _transction("postStory", text, "null", "null")
-      );
+      responseData = await _transction("postStory", text, "null", "null");
     }
     setResponse(responseData);
     fetchAllPosts();
@@ -52,6 +51,7 @@ const Timeline = () => {
 
   useEffect(() => {
     fetchAllPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function reverseArr(input) {
@@ -63,10 +63,7 @@ const Timeline = () => {
   }
 
   async function fetchAllPosts() {
-    const getAllPosts = await connect.then(({ _fetch }) =>
-      _fetch("getAllposts")
-    );
-    console.log("----------->", getAllPosts);
+    const getAllPosts = await _fetch("getAllposts");
     setMessages(reverseArr(getAllPosts));
   }
 
@@ -78,6 +75,10 @@ const Timeline = () => {
   const modalClose = () => {
     setStart(false);
     setResponse(null);
+  };
+
+  const getEditorValue = (val) => {
+    setHtmlCode(val);
   };
 
   return (
@@ -110,7 +111,16 @@ const Timeline = () => {
                         className="form-group"
                         style={{ marginLeft: 10, marginTop: 10 }}
                       >
-                        <Field
+                        <TextEditor
+                          id="story-description"
+                          name="description"
+                          label="Description"
+                          tip="Describe the project in as much detail as you'd like."
+                          value={htmlCode}
+                          onChange={getEditorValue}
+                        />
+
+                        {/* <Field
                           type="text"
                           name="text"
                           autoComplete="flase"
@@ -119,7 +129,7 @@ const Timeline = () => {
                             touched.text && errors.text ? "is-invalid" : ""
                           }`}
                           style={{ marginRight: 10, padding: 9 }}
-                        />
+                        /> */}
                       </div>
                       <div className="form-group">
                         <span className="input-group-btn">

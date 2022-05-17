@@ -19,7 +19,7 @@ export default function BasicModal({ openVendorModal, nameonly, addressonly }) {
   }, []);
 
   async function fetchStudentData() {
-    const students = await _fetch("getAllUsers");
+    const students = await _fetch("getAllUser");
     const account = await _account();
     setAccount(account);
     setStudentData(students);
