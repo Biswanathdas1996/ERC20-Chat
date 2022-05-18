@@ -47,14 +47,14 @@
             "type": "uint256"
           },
           {
-            "internalType": "address",
+            "internalType": "string",
             "name": "sender",
-            "type": "address"
+            "type": "string"
           },
           {
-            "internalType": "address",
+            "internalType": "string",
             "name": "recever",
-            "type": "address"
+            "type": "string"
           },
           {
             "internalType": "string",
@@ -77,9 +77,9 @@
             "type": "string"
           },
           {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
+            "internalType": "string",
+            "name": "time",
+            "type": "string"
           }
         ],
         "internalType": "struct SOSAL.Message[]",
@@ -115,9 +115,9 @@
             "type": "uint256"
           },
           {
-            "internalType": "address",
+            "internalType": "string",
             "name": "sender",
-            "type": "address"
+            "type": "string"
           },
           {
             "internalType": "string",
@@ -137,6 +137,11 @@
           {
             "internalType": "string",
             "name": "fileType",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "time",
             "type": "string"
           }
         ],
@@ -183,14 +188,14 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
+        "internalType": "string",
         "name": "sender",
-        "type": "address"
+        "type": "string"
       },
       {
-        "internalType": "address",
+        "internalType": "string",
         "name": "recever",
-        "type": "address"
+        "type": "string"
       },
       {
         "internalType": "string",
@@ -213,9 +218,9 @@
         "type": "string"
       },
       {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "time",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -236,6 +241,16 @@
       {
         "internalType": "string",
         "name": "fileType",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "sender",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "time",
         "type": "string"
       }
     ],
@@ -260,9 +275,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
+        "internalType": "string",
         "name": "sender",
-        "type": "address"
+        "type": "string"
       },
       {
         "internalType": "string",
@@ -283,6 +298,11 @@
         "internalType": "string",
         "name": "fileType",
         "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "time",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -291,9 +311,14 @@
   {
     "inputs": [
       {
-        "internalType": "address",
+        "internalType": "string",
         "name": "toAddress",
-        "type": "address"
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "sender",
+        "type": "string"
       },
       {
         "internalType": "string",
@@ -311,9 +336,9 @@
         "type": "string"
       },
       {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "time",
+        "type": "string"
       }
     ],
     "name": "sendMassage",

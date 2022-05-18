@@ -14,26 +14,21 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import DescriptionIcon from "@mui/icons-material/Description";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import GetUser from "../../components/shared/GetUser";
 
 export default function RecipeReviewCard({ data }) {
   const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
   const validVideoeTypes = ["video/mp4"];
-
+  console.log("-ddd-->", data);
   return (
     <Card style={{ marginTop: 20 }}>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
+        avatar={<GetUser uid={data?.sender} subtext="September 14, 2016" />}
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        title={data?.sender}
-        subheader="September 14, 2016"
       />
       {validImageTypes.includes(data?.fileType) && (
         <a href={data?.file} target="_blank" rel="noreferrer">

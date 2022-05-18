@@ -24,9 +24,9 @@ import { _fetch, _account } from "./ABI-connect/MessangerABI/connect";
 
 export const AccountContest = React.createContext("light");
 
-const isEthEnebled = window?.ethereum?.request({
-  method: "eth_requestAccounts",
-});
+// const isEthEnebled = window?.ethereum?.request({
+//   method: "eth_requestAccounts",
+// });
 
 export const AccountContext = createContext();
 
@@ -47,43 +47,39 @@ const App = () => {
     }
   }
 
-  if (isEthEnebled) {
-    return (
-      <>
-        {/* <NavigationBar /> */}
-        <AccountContext.Provider value={{ account, fetchUserData }}>
-          <Layout
-            body={() => {
-              return (
-                <Routes>
-                  <Route path="/" element={<Timeline />} />
-                  <Route path="/chat" element={<Chat />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/users" element={<UserList />} />
-                  <Route path="/nft-mint" element={<Mint />} />
-                  <Route path="/nft-market" element={<NftMarket />} />
-                  <Route path="/my-nft" element={<MyNft />} />
-                  <Route path="/nft-details/:id" element={<NftDetails />} />
+  return (
+    <>
+      {/* <NavigationBar /> */}
+      <AccountContext.Provider value={{ account, fetchUserData }}>
+        <Layout
+          body={() => {
+            return (
+              <Routes>
+                <Route path="/" element={<Timeline />} />
+                <Route path="/chat" element={<Chat />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/users" element={<UserList />} />
+                <Route path="/nft-mint" element={<Mint />} />
+                <Route path="/nft-market" element={<NftMarket />} />
+                <Route path="/my-nft" element={<MyNft />} />
+                <Route path="/nft-details/:id" element={<NftDetails />} />
 
-                  <Route path="/event/create" element={<CreatePass />} />
-                  <Route path="/event/all" element={<ListAllPass />} />
-                  <Route path="/event/my-tickets" element={<MyPass />} />
+                <Route path="/event/create" element={<CreatePass />} />
+                <Route path="/event/all" element={<ListAllPass />} />
+                <Route path="/event/my-tickets" element={<MyPass />} />
 
-                  <Route path="/voice" element={<CreateVoiceFile />} />
+                <Route path="/voice" element={<CreateVoiceFile />} />
 
-                  <Route path="/encrypt/users" element={<Users />} />
+                <Route path="/encrypt/users" element={<Users />} />
 
-                  <Route path="/doc" element={<ABIDocumentation />} />
-                </Routes>
-              );
-            }}
-          />
-        </AccountContext.Provider>
-      </>
-    );
-  } else {
-    return <Error401Page />;
-  }
+                <Route path="/doc" element={<ABIDocumentation />} />
+              </Routes>
+            );
+          }}
+        />
+      </AccountContext.Provider>
+    </>
+  );
 };
 export default App;

@@ -4,7 +4,7 @@ import { _fetch } from "../../ABI-connect/MessangerABI/connect";
 import Skeleton from "@mui/material/Skeleton";
 import Tooltip from "@mui/material/Tooltip";
 
-const GetUser = ({ uid }) => {
+const GetUser = ({ uid, subtext = "", hideName = false, imgStyle = {} }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -37,13 +37,25 @@ const GetUser = ({ uid }) => {
               height: 60,
               borderRadius: "50%",
             }}
+            style={imgStyle}
             src={user?.profileImg}
             title={user?.name}
           ></Avatar>
 
-          <p style={{ color: "black", margin: 10, fontWeight: "bold" }}>
-            {user?.name}
-          </p>
+          {!hideName && (
+            <p style={{ color: "black", margin: 5, fontWeight: "bold" }}>
+              {user?.name}
+              <p
+                style={{
+                  color: "rgb(118, 118, 118)",
+                  fontSize: 12,
+                  fontWeight: "400",
+                }}
+              >
+                {subtext}
+              </p>
+            </p>
+          )}
         </div>
       ) : (
         <Skeleton animation="wave" />

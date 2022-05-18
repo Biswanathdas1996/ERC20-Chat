@@ -36,11 +36,15 @@ const Timeline = () => {
       const results = await client.add(file);
       // const saveHtmlDescription = await client.add(htmlCode);
       console.log(results.path);
+      const sender = await _account();
+      const date = new Date();
       responseData = await _transction(
         "postStory",
         JSON.stringify(htmlCode),
         `https://ipfs.io/ipfs/${results.path}`,
-        file.type
+        file.type,
+        sender,
+        date
       );
     } else {
       responseData = await _transction("postStory", text, "null", "null");

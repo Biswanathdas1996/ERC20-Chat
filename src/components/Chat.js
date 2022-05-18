@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 import {
   _transction,
   _fetch,
@@ -14,6 +15,13 @@ import TransctionModal from "./shared/TransctionModal";
 import { create } from "ipfs-http-client";
 import DescriptionIcon from "@mui/icons-material/Description";
 import { useNavigate } from "react-router-dom";
+import GetUser from "../components/shared/GetUser";
+
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import RestoreIcon from "@mui/icons-material/Restore";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -27,9 +35,9 @@ const Chat = () => {
   const [messages, setMessages] = useState(null);
   const [account, setAccount] = useState(null);
   const [file, setFile] = useState(null);
-  const [amount, setAmount] = useState(null);
   const [receverAddress, setReceverAddress] = useState(null);
   const [receverName, setReceverName] = useState(null);
+  const [uploadFile, setUploadFile] = React.useState(false);
   const messagesEndRef = useRef(null);
   let history = useNavigate();
 
@@ -39,13 +47,15 @@ const Chat = () => {
 
   const saveData = async ({ text }) => {
     setStart(true);
+    const date = new Date();
     const responseData = await _transction(
       "sendMassage",
       receverAddress,
+      account,
       text,
       "null",
       "null",
-      0
+      date
     );
     setResponse(responseData);
     fetshMessages();
@@ -54,7 +64,6 @@ const Chat = () => {
   useEffect(() => {
     fetshMessages();
     const receverAddress = localStorage.getItem("userAddressforChat");
-    const receverName = localStorage.getItem("userNameforChat");
     if (!receverAddress) {
       history("/users");
       return;
@@ -89,36 +98,17 @@ const Chat = () => {
     const results = await client.add(file);
 
     console.log(results.path);
-
+    const date = new Date();
     const responseData = await _transction(
       "sendMassage",
       receverAddress,
+      account,
       "null",
       `https://ipfs.io/ipfs/${results.path}`,
       file.type,
-      0
+      date
     );
     setResponse(responseData);
-    fetshMessages();
-  };
-
-  const sendAmount = async () => {
-    setStart(true);
-    const responseDataMoney = await _transction(
-      "transfer",
-      receverAddress,
-      amount
-    );
-
-    const responseData = await _transction(
-      "sendMassage",
-      receverAddress,
-      "null",
-      "null",
-      "null",
-      amount
-    );
-    setResponse(responseDataMoney);
     fetshMessages();
   };
 
@@ -130,20 +120,18 @@ const Chat = () => {
   const renderMessage = (data) => {
     const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
     const validVideoeTypes = ["video/mp4"];
-    if (data?.amount !== "0") {
-      return (
-        <>
-          <b style={{ color: "green" }}>Transction: </b> {data?.amount} MTN
-        </>
-      );
-    } else if (data?.text !== "null") {
+    if (data?.text !== "null") {
       return data?.text;
     } else {
       if (validImageTypes.includes(data?.fileType)) {
         return (
           <center>
             <a href={data?.file} target="_blank" rel="noreferrer">
-              <img src={data?.file} alt={data?.file} />
+              <img
+                src={data?.file}
+                alt={data?.file}
+                style={{ borderRadius: "5px" }}
+              />
             </a>
           </center>
         );
@@ -195,41 +183,39 @@ const Chat = () => {
             >
               {messages?.map((data, index) => {
                 return (
-                  <>
-                    <b
+                  <Grid
+                    item
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    xs={12}
+                    key={`chat_${index}`}
+                  >
+                    <Card
                       style={{
-                        color: "grey",
-                        marginLeft: "1.5rem",
-                        marginTop: "15px",
+                        padding: 10,
+                        maxWidth: "25rem",
+                        minWidth: "20rem",
+                        PaddingTop: "0px",
+                        textAlign: "left",
+                        display: "flex",
+                        float: data?.sender === account ? "right" : "left",
+                        backgroundColor:
+                          data?.sender === account ? "#8080801c" : "white",
                       }}
                     >
-                      {data?.sender === account ? "" : receverName}
-                    </b>
-
-                    <Grid
-                      item
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      key={index + "_message"}
-                    >
-                      <Card
-                        style={{
-                          padding: 10,
-                          maxWidth: "25rem",
-                          minWidth: "20rem",
-                          PaddingTop: "0px",
-                          textAlign: "left",
-                          float: data?.sender === account ? "right" : "left",
-                          backgroundColor:
-                            data?.sender === account ? "#8080801c" : "white",
+                      <GetUser
+                        uid={data?.sender}
+                        hideName={true}
+                        imgStyle={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
                         }}
-                      >
-                        {renderMessage(data)}
-                      </Card>
-                    </Grid>
-                  </>
+                      />
+                      <div style={{ padding: 10 }}>{renderMessage(data)}</div>
+                    </Card>
+                  </Grid>
                 );
               })}
             </Grid>
@@ -237,93 +223,135 @@ const Chat = () => {
           <Box sx={{ marginBottom: "10rem" }}></Box>
         </center>
         {/* ///msg submit form */}
-        <div>
-          <Card>
-            <Grid container>
-              <Grid item lg={12} md={12} sm={12} xs={12}>
-                <div
-                  style={{
-                    padding: "20px",
-                    bottom: 0,
-                    position: "absolute",
-                    background: "white",
-                  }}
-                >
-                  <Formik
-                    initialValues={{
-                      text: "",
-                    }}
-                    validationSchema={VendorSchema}
-                    onSubmit={(values, { setSubmitting }) => {
-                      saveData(values);
-                      setSubmitting(false);
-                    }}
+
+        <div className="chatInputWrapper">
+          <Card style={{ padding: 10 }}>
+            <Formik
+              initialValues={{
+                text: "",
+              }}
+              validationSchema={VendorSchema}
+              onSubmit={(values, { setSubmitting }) => {
+                saveData(values);
+                setSubmitting(false);
+              }}
+              style={{ padding: 10 }}
+            >
+              {({ touched, errors, isSubmitting }) => (
+                <Form className="form-inline">
+                  <div
+                    className="form-group"
+                    style={{ marginTop: 10, width: "70%" }}
                   >
-                    {({ touched, errors, isSubmitting }) => (
-                      <Form className="form-inline">
-                        <div
-                          className="form-group"
-                          style={{ marginLeft: 10, marginTop: 10 }}
-                        >
-                          <Field
-                            type="text"
-                            name="text"
-                            autoComplete="flase"
-                            placeholder="Enter text"
-                            className={`form-control text-muted ${
-                              touched.text && errors.text ? "is-invalid" : ""
-                            }`}
-                            style={{ marginRight: 10, padding: 9 }}
-                          />
-                        </div>
-                        <div className="form-group">
-                          <span className="input-group-btn">
-                            <input
-                              className="btn btn-default btn-primary"
-                              type="submit"
-                              value={"Submit"}
-                            />
-                          </span>
-                        </div>
-
-                        <div style={{ marginLeft: 10, marginTop: 10 }}>
-                          <input type="file" onChange={onFileChange} />
-                          <button
-                            onClick={onFileUpload}
-                            className="btn btn-default btn-primary"
-                          >
-                            Upload!
-                          </button>
-                        </div>
-
-                        <div
-                          style={{ marginLeft: 10, marginTop: 10 }}
-                          className="form-group"
-                        >
-                          <input
-                            type="number"
-                            onChange={(e) => setAmount(e.target.value)}
-                            className={`form-control`}
-                            style={{ marginRight: 10 }}
-                            placeholder="Enter amount"
-                          />
-                          <button
-                            onClick={sendAmount}
-                            className="btn btn-default btn-primary"
-                          >
-                            Send Money
-                          </button>
-                        </div>
-                      </Form>
+                    {!uploadFile ? (
+                      <Field
+                        type="text"
+                        name="text"
+                        autoComplete="flase"
+                        placeholder="Enter text"
+                        className={`textField ${
+                          touched.text && errors.text ? "is-invalid" : ""
+                        }`}
+                        // style={{ marginRight: 10 }}
+                      />
+                    ) : (
+                      <Field
+                        type="file"
+                        name="text"
+                        autoComplete="flase"
+                        placeholder="Enter text"
+                        className={`textField ${
+                          touched.text && errors.text ? "is-invalid" : ""
+                        }`}
+                        onChange={onFileChange}
+                        // style={{ marginRight: 10 }}
+                      />
                     )}
-                  </Formik>
-                </div>
-              </Grid>
-            </Grid>
+                  </div>
+                  <div className="form-group" style={{ width: "30%" }}>
+                    {uploadFile ? (
+                      <>
+                        <button
+                          onClick={onFileUpload}
+                          className="btn btn-default btn-primary"
+                          type="button"
+                          style={{
+                            marginTop: 10,
+                            marginLeft: 10,
+                            width: "100%",
+                          }}
+                        >
+                          Send File
+                        </button>
+                        <button
+                          onClick={() => setUploadFile(false)}
+                          className="btn btn-default btn-primary"
+                          type="button"
+                          style={{
+                            marginTop: 10,
+                            marginLeft: 10,
+                            width: "100%",
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <input
+                          className="btn btn-default btn-primary "
+                          type="submit"
+                          value={"Submit"}
+                          style={{
+                            marginTop: 10,
+                            marginLeft: 10,
+                            width: "100%",
+                          }}
+                        />
+                        <button
+                          onClick={() => setUploadFile(true)}
+                          className="btn btn-default btn-primary"
+                          type="button"
+                          style={{
+                            marginTop: 10,
+                            marginLeft: 10,
+                            width: "100%",
+                          }}
+                        >
+                          Send File
+                        </button>
+                      </>
+                    )}
+                  </div>
+
+                  <div style={{ marginLeft: 10, marginTop: 10 }}>
+                    {/* <input
+                      type="file"
+                      className="textField"
+                      onChange={onFileChange}
+                    /> */}
+                    {/* <button
+                      onClick={onFileUpload}
+                      className="btn btn-default btn-primary"
+                      type="button"
+                    >
+                      Upload!
+                    </button> */}
+                  </div>
+                </Form>
+              )}
+            </Formik>
           </Card>
         </div>
-        <div ref={messagesEndRef} />
+
+        {/* <Paper
+          sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+          elevation={3}
+        >
+          <BottomNavigation></BottomNavigation>
+        </Paper> */}
       </div>
+      <div ref={messagesEndRef} />
     </>
   );
 };
