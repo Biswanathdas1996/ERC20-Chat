@@ -8,7 +8,6 @@ import {
   _transction,
   _fetch,
   _account,
-  _conveter,
 } from "../../ABI-connect/Event-Entry-Pass/connect";
 import TransctionModal from "../shared/TransctionModal";
 import Web3 from "web3";

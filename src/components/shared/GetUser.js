@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Avatar } from "@mui/material";
 import { _fetch } from "../../ABI-connect/MessangerABI/connect";
 import Skeleton from "@mui/material/Skeleton";
-import Tooltip from "@mui/material/Tooltip";
 
 const GetUser = ({ uid, subtext = "", hideName = false, imgStyle = {} }) => {
   const [user, setUser] = useState(null);

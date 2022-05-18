@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-
-import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
+import { Formik, Form, Field, FieldArray } from "formik";
 import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
-
 import { _transction } from "../../ABI-connect/NFT-ABI/connect";
 import TransctionModal from "../shared/TransctionModal";
 import { create } from "ipfs-http-client";
 import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
+
 const web3 = new Web3(window.ethereum);
 
 const client = create("https://ipfs.infura.io:5001/api/v0");

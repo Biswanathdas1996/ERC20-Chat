@@ -1,16 +1,13 @@
 import "./App.css";
 import React, { useState, useEffect, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
-import Registration from "./components/Registration";
 import Chat from "./components/Chat";
-import NavigationBar from "./components/NavigationBar";
 import UserList from "./components/UserList";
 import Timeline from "./components/Timeline";
 import Mint from "./components/NFT/Mint";
 import NftMarket from "./components/NFT/NftMarket";
 import MyNft from "./components/NFT/MyNft";
 import NftDetails from "./components/NFT/NftDetails";
-import Error401Page from "./components/Errors/401";
 import CreatePass from "./components/Event-Pass/CreatePass";
 import ListAllPass from "./components/Event-Pass/ListAllPass";
 import MyPass from "./components/Event-Pass/MyPass";

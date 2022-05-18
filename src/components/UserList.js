@@ -1,10 +1,8 @@
+/* eslint-disable array-callback-return */
 import * as React from "react";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import { useNavigate } from "react-router-dom";
-import { Avatar, ListItemAvatar } from "@mui/material";
+import { ListItemAvatar } from "@mui/material";
 import { _fetch, _account } from "../ABI-connect/MessangerABI/connect";
 import Card from "@mui/material/Card";
 import { Grid } from "@mui/material";
@@ -21,7 +19,6 @@ export default function BasicModal({ openVendorModal, nameonly, addressonly }) {
 
   async function fetchStudentData() {
     const students = await _fetch("getAllUser");
-    console.log("---->", students);
     const account = await _account();
     setAccount(account);
     setStudentData(students);

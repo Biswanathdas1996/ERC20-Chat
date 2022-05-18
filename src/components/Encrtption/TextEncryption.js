@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from "react";
-import Card from "react-bootstrap/Card";
+import React, { useState } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import { Button } from "react-bootstrap";
-import { Base64 } from "js-base64";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Encryption } from "ces-system";
 
 export default function EncryptionView() {

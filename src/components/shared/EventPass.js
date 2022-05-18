@@ -5,22 +5,15 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
 import {
   _fetch,
   _account,
   _paid_transction,
-  _conveter,
 } from "../../ABI-connect/Event-Entry-Pass/connect";
 import TransctionModal from "../shared/TransctionModal";
 import TicketModalBody from "../shared/TicketModalBody";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-
-import Box from "@mui/material/Box";
 import Modal from "react-bootstrap/Modal";
 
 const EventPass = ({ data, symbol }) => {
@@ -38,6 +31,7 @@ const EventPass = ({ data, symbol }) => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const fetchData = async () => {
     const account = await _account();

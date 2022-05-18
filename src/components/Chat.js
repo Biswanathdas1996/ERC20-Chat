@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import {
   _transction,
   _fetch,
@@ -16,12 +15,6 @@ import { create } from "ipfs-http-client";
 import DescriptionIcon from "@mui/icons-material/Description";
 import { useNavigate } from "react-router-dom";
 import GetUser from "../components/shared/GetUser";
-
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -70,6 +63,7 @@ const Chat = () => {
     }
     setReceverAddress(receverAddress);
     setReceverName(receverName);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [receverAddress]);
 
   async function fetshMessages() {

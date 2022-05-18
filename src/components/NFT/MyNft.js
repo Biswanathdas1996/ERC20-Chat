@@ -21,7 +21,7 @@ const Timeline = () => {
 
     await getAllToken.map(async (tokenId) => {
       const owner = await _fetch("ownerOf", tokenId);
-      if (account == owner) {
+      if (account.toString() === owner.toString()) {
         tokenOwnedByMe.push(tokenId);
         console.log("tokenId", tokenId);
         setToken(tokenOwnedByMe);

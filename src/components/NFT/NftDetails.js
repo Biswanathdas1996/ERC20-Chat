@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { Grid } from "@mui/material";
 import {
@@ -7,14 +7,12 @@ import {
   _transction,
   _account,
 } from "../../ABI-connect/NFT-ABI/connect";
-import CurrentNFTCard from "../shared/CurrentNFTCard";
 import { useParams } from "react-router-dom";
-
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Button, CardActionArea, CardActions } from "@mui/material";
+import { CardActionArea } from "@mui/material";
 import TransctionModal from "../shared/TransctionModal";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -24,6 +22,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Web3 from "web3";
+
 const web3 = new Web3(window.ethereum);
 
 const VendorSchema = Yup.object().shape({
@@ -41,11 +40,11 @@ const Timeline = () => {
   const [response, setResponse] = useState(null);
   const [price, setPriceValue] = useState(null);
   const [royelty, setRoyelty] = useState(null);
-  const [author, setAuthor] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
     fetchAllPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchAllPosts() {

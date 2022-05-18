@@ -25,6 +25,7 @@ const VoiceFile = () => {
     if (transcript) {
       debounce_fun(transcript);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transcript]);
   // throttle
   const debounce_fun = _.debounce(function (transcript) {
