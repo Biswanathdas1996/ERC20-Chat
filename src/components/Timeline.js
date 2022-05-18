@@ -92,9 +92,9 @@ const Timeline = () => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           style={{ marginBottom: 20 }}
         >
-          <Grid item xs={12} lg={7} md={7} sm={12}>
+          <Grid item xs={12} lg={8} md={8} sm={12}>
             <Card>
-              <div style={{ padding: 20, marginLeft: 20 }}>
+              <div style={{ padding: 10 }}>
                 <Formik
                   initialValues={{
                     text: "",
@@ -163,7 +163,7 @@ const Timeline = () => {
               })}
             </Box>
           </Grid>
-          <Grid item xs={12} lg={5} md={5} sm={12}>
+          <Grid item xs={12} lg={4} md={4} sm={12}>
             <UserList />
           </Grid>
         </Grid>
