@@ -46,5 +46,11 @@
     "function": "callSupport",
     "page": "Call support",
     "type": "action"
+  },
+  {
+    "text": "Chat on whatsapp",
+    "function": "chatOnWhatsApp",
+    "page": "Chat on whatsapp",
+    "type": "action"
   }
 ]
