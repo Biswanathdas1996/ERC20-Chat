@@ -4,6 +4,8 @@ import SpeechRecognition, {
 import StringSimilarity from "string-similarity";
 import swal from "@sweetalert/with-react";
 
+import { actionItems } from "./actions";
+
 const unKnownSwal = (shortScore) => {
   return swal(
     <div>
@@ -59,6 +61,7 @@ export const VoiceProcessing = (props) => {
         nav: data?.nav,
         score: StringSimilarity.compareTwoStrings(data?.text, transcript),
         page: data?.page,
+        function: data?.function,
       };
     });
 
@@ -70,7 +73,23 @@ export const VoiceProcessing = (props) => {
       resetTranscript();
 
       if (shortScore[0].score > 0.45) {
-        navigateToPage(shortScore[0]?.nav);
+        if (shortScore[0]?.type === "navigation") {
+          navigateToPage(shortScore[0]?.nav);
+        } else {
+          console.log(shortScore[0]?.function);
+          const doAction = actionItems(shortScore[0]?.function);
+          swal({
+            title: "Are you sure?",
+            text: `you want to ${shortScore[0]?.page}`,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          }).then((willDelete) => {
+            if (willDelete) {
+              doAction();
+            }
+          });
+        }
 
         return;
       } else {

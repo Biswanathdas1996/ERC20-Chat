@@ -13,7 +13,7 @@ const VoiceFile = () => {
     browserSupportsSpeechRecognition,
     transcript,
     listening,
-  } = VoiceProcessing({ TrainingData, history });
+  } = VoiceProcessing({ TrainingData, history }); // history is optional
 
   if (!browserSupportsSpeechRecognition) {
     return <span></span>;

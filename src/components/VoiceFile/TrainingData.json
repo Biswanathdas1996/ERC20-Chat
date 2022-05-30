@@ -2,36 +2,49 @@
   {
     "text": "I want to go to home page",
     "nav": "/",
-    "page": "Home Page"
+    "page": "Home Page",
+    "type": "navigation"
   },
   {
     "text": "home",
     "nav": "/",
-    "page": "Home Page"
+    "page": "Home Page",
+    "type": "navigation"
   },
   {
     "text": "got to first page",
     "nav": "/",
-    "page": "Home Page"
+    "page": "Home Page",
+    "type": "navigation"
   },
   {
     "text": "go to user page",
     "nav": "/users",
-    "page": "User Page"
+    "page": "User Page",
+    "type": "navigation"
   },
   {
     "text": "I want to register",
     "nav": "/register",
-    "page": "Registration page"
+    "page": "Registration page",
+    "type": "navigation"
   },
   {
     "text": "I want to buy nft",
     "nav": "/nft-market",
-    "page": "Buy Nft page"
+    "page": "Buy Nft page",
+    "type": "navigation"
   },
   {
     "text": "I want to buy tickets",
     "nav": "/event/all",
-    "page": "Registration page"
+    "page": "Registration page",
+    "type": "navigation"
+  },
+  {
+    "text": "call support",
+    "function": "callSupport",
+    "page": "Call support",
+    "type": "action"
   }
 ]
