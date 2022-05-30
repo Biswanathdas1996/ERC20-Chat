@@ -27,7 +27,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Avatar } from "@mui/material";
 import { AccountContext } from "../App";
 import { Button } from "@mui/material";
-import VoiceFile from "./VoiceFile/Create";
+import VoiceFile from "./VoiceFile/index";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 

@@ -11,7 +11,6 @@ import NftDetails from "./components/NFT/NftDetails";
 import CreatePass from "./components/Event-Pass/CreatePass";
 import ListAllPass from "./components/Event-Pass/ListAllPass";
 import MyPass from "./components/Event-Pass/MyPass";
-import CreateVoiceFile from "./components/VoiceFile/Create";
 import Layout from "./components/Layout";
 import Users from "./components/Encrtption/Users";
 import ABIDocumentation from "./pages/ABIDocumentation";
@@ -65,8 +64,6 @@ const App = () => {
                 <Route path="/event/create" element={<CreatePass />} />
                 <Route path="/event/all" element={<ListAllPass />} />
                 <Route path="/event/my-tickets" element={<MyPass />} />
-
-                <Route path="/voice" element={<CreateVoiceFile />} />
 
                 <Route path="/encrypt/users" element={<Users />} />
 

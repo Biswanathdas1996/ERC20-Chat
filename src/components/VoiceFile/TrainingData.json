@@ -1,0 +1,37 @@
+[
+  {
+    "text": "I want to go to home page",
+    "nav": "/",
+    "page": "Home Page"
+  },
+  {
+    "text": "home",
+    "nav": "/",
+    "page": "Home Page"
+  },
+  {
+    "text": "got to first page",
+    "nav": "/",
+    "page": "Home Page"
+  },
+  {
+    "text": "go to user page",
+    "nav": "/users",
+    "page": "User Page"
+  },
+  {
+    "text": "I want to register",
+    "nav": "/register",
+    "page": "Registration page"
+  },
+  {
+    "text": "I want to buy nft",
+    "nav": "/nft-market",
+    "page": "Buy Nft page"
+  },
+  {
+    "text": "I want to buy tickets",
+    "nav": "/event/all",
+    "page": "Registration page"
+  }
+]

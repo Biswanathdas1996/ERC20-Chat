@@ -40,7 +40,7 @@ const Chat = () => {
 
   const saveData = async ({ text }) => {
     setStart(true);
-    const date = new Date();
+    const date = new Date().toLocaleString();
     const responseData = await _transction(
       "sendMassage",
       receverAddress,
@@ -92,7 +92,7 @@ const Chat = () => {
     const results = await client.add(file);
 
     console.log(results.path);
-    const date = new Date();
+    const date = new Date().toLocaleString();
     const responseData = await _transction(
       "sendMassage",
       receverAddress,
@@ -207,7 +207,14 @@ const Chat = () => {
                           borderRadius: "50%",
                         }}
                       />
-                      <div style={{ padding: 10 }}>{renderMessage(data)}</div>
+                      <div style={{ padding: 10, width: "100%" }}>
+                        {renderMessage(data)}
+                        <div style={{ fontSize: 11, color: "#808080f0" }}>
+                          <span style={{ float: "right", marginTop: 10 }}>
+                            {data?.time}
+                          </span>
+                        </div>
+                      </div>
                     </Card>
                   </Grid>
                 );
@@ -295,7 +302,7 @@ const Chat = () => {
                         <input
                           className="btn btn-default btn-primary "
                           type="submit"
-                          value={"Submit"}
+                          value={"Send"}
                           style={{
                             marginTop: 10,
                             marginLeft: 10,

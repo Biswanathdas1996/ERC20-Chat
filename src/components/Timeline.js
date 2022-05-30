@@ -37,7 +37,7 @@ const Timeline = () => {
       // const saveHtmlDescription = await client.add(htmlCode);
       console.log(results.path);
       const sender = await _account();
-      const date = new Date();
+      const date = new Date().toLocaleString();
       responseData = await _transction(
         "postStory",
         JSON.stringify(htmlCode),
@@ -147,7 +147,7 @@ const Timeline = () => {
                           <input
                             className="btn btn-default btn-primary"
                             type="submit"
-                            value={"Submit"}
+                            value={"Post"}
                           />
                         </span>
                       </div>

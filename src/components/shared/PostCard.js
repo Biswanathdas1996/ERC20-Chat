@@ -15,11 +15,10 @@ import GetUser from "../../components/shared/GetUser";
 export default function RecipeReviewCard({ data }) {
   const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
   const validVideoeTypes = ["video/mp4"];
-  console.log("-ddd-->", data);
   return (
     <Card style={{ marginTop: 20 }}>
       <CardHeader
-        avatar={<GetUser uid={data?.sender} subtext="September 14, 2016" />}
+        avatar={<GetUser uid={data?.sender} subtext={data?.time} />}
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
