@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
