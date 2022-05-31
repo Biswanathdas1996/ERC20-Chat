@@ -1,33 +1,21 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
+import Modal from "react-bootstrap/Modal";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import CircularProgress from "@mui/material/CircularProgress";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
+
 import ListItemText from "@mui/material/ListItemText";
-
+import { ViewTransctionDetailsLink } from "../../config";
 const steps = ["Initiating", "Waiting for confirmation", "Transction complete"];
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 
 export default function TransctionModal({ response, setStart, modalClose }) {
   const [open, setOpen] = React.useState(true);
+
   const handleClose = () => {
     setOpen(false);
     modalClose();
@@ -37,11 +25,13 @@ export default function TransctionModal({ response, setStart, modalClose }) {
   return (
     <div>
       <Modal
-        open={open}
-        aria-labelledby="modal-modal-title"
+        show={open}
+        size="lg"
+        aria-labelledby="example-modal-sizes-title-lg"
         aria-describedby="modal-modal-description"
+        style={{ marginTop: "5rem" }}
       >
-        <Box sx={{ ...style, width: 700 }}>
+        <div style={{ padding: "2rem" }}>
           <Stepper activeStep={domData ? 3 : 1} alternativeLabel>
             {steps.map((label) => (
               <Step key={label}>
@@ -78,51 +68,108 @@ export default function TransctionModal({ response, setStart, modalClose }) {
                   <ListItemText
                     primary="Transaction hash"
                     secondary={
-                      <React.Fragment>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          width: "19rem",
+                        }}
+                      >
                         <a
-                          href={`https://rinkeby.etherscan.io/tx/${domData?.transactionHash}`}
+                          href={ViewTransctionDetailsLink(
+                            domData?.transactionHash
+                          )}
                           target="_blank"
                           rel="noreferrer"
                         >
-                          {domData?.transactionHash}
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              width: "11rem",
+                            }}
+                          >
+                            {domData?.transactionHash}
+                          </Typography>
                         </a>
-                      </React.Fragment>
+                      </Typography>
                     }
                   />
                 </ListItem>
-                <Divider variant="inset" component="li" />
+
                 <ListItem alignItems="flex-start">
                   <ListItemText
                     primary="Block hash"
                     secondary={
-                      <React.Fragment>{domData?.blockHash}</React.Fragment>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          width: "11rem",
+                        }}
+                      >
+                        {domData?.blockHash}
+                      </Typography>
                     }
                   />
                 </ListItem>
-                <Divider variant="inset" component="li" />
+
                 <ListItem alignItems="flex-start">
                   <ListItemText
                     primary="Block number"
                     secondary={
-                      <React.Fragment>{domData?.blockNumber}</React.Fragment>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          width: "11rem",
+                        }}
+                      >
+                        {domData?.blockNumber}
+                      </Typography>
                     }
                   />
                 </ListItem>
-                <Divider variant="inset" component="li" />
+
                 <ListItem alignItems="flex-start">
                   <ListItemText
                     primary="Transction from"
-                    secondary={<React.Fragment>{domData?.from}</React.Fragment>}
+                    secondary={
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          width: "11rem",
+                        }}
+                      >
+                        {domData?.from}
+                      </Typography>
+                    }
                   />
                 </ListItem>
-                <Divider variant="inset" component="li" />
+
                 <ListItem alignItems="flex-start">
                   <ListItemText
                     primary="Transction to"
-                    secondary={<React.Fragment>{domData?.to}</React.Fragment>}
+                    secondary={
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          width: "11rem",
+                        }}
+                      >
+                        {domData?.to}
+                      </Typography>
+                    }
                   />
                 </ListItem>
-                <Divider variant="inset" component="li" />
               </List>
             )}
 
@@ -151,7 +198,7 @@ export default function TransctionModal({ response, setStart, modalClose }) {
               <CircularProgress style={{ marginTop: 30 }} />
             )}
           </center>
-        </Box>
+        </div>
       </Modal>
     </div>
   );

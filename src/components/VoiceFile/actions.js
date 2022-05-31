@@ -1,5 +1,5 @@
 export function callSupport() {
-  return window.open("tel:8001691299");
+  return window.location.replace("tel:8001691299");
 }
 
 export function chatOnWhatsApp() {
