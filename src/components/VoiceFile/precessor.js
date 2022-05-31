@@ -59,10 +59,8 @@ export const VoiceProcessing = (props) => {
   const processingEngine = debounce(function (transcript) {
     const search = TrainingData?.map((data) => {
       return {
-        nav: data?.nav,
         score: StringSimilarity.compareTwoStrings(data?.text, transcript),
-        page: data?.page,
-        function: data?.function,
+        data: data,
       };
     });
 
@@ -74,14 +72,14 @@ export const VoiceProcessing = (props) => {
       resetTranscript();
 
       if (shortScore[0].score > 0.45) {
-        if (shortScore[0]?.type === "navigation") {
-          navigateToPage(shortScore[0]?.nav);
+        if (shortScore[0]?.data?.type === "navigation") {
+          navigateToPage(shortScore[0]?.data?.nav);
         } else {
-          console.log(shortScore[0]?.function);
-          const doAction = actionItems(shortScore[0]?.function);
+          console.log(shortScore[0]?.data?.function);
+          const doAction = actionItems(shortScore[0]?.data?.function);
           swal({
             title: "Are you sure?",
-            text: `you want to ${shortScore[0]?.page}`,
+            text: `you want to ${shortScore[0]?.data?.page}`,
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -91,7 +89,6 @@ export const VoiceProcessing = (props) => {
             }
           });
         }
-
         return;
       } else {
         unKnownSwal(shortScore);
