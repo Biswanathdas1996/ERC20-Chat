@@ -8,11 +8,12 @@ import swal from "@sweetalert/with-react";
 import { actionItems } from "./actions";
 
 const unKnownSwal = (shortScore) => {
+  console.log("---shortScore", shortScore);
   return swal(
     <div>
       <h5>Are you lookig for</h5>
       {shortScore?.slice(0, 6).map((val, index) => {
-        if (val?.nav) {
+        if (val?.data?.nav) {
           return (
             <div
               className="ms-2 me-auto"
@@ -24,10 +25,10 @@ const unKnownSwal = (shortScore) => {
               }}
               key={index}
             >
-              <div className="fw-bold">{val?.page}</div>
-              <a href={val?.nav}>
+              <div className="fw-bold">{val?.data?.page}</div>
+              <a href={val?.data?.nav}>
                 <small style={{ color: "#1976d2", cursor: "pointer" }}>
-                  {window.location.origin} {val?.nav}
+                  {window.location.origin} {val?.data?.nav}
                 </small>
               </a>
             </div>
