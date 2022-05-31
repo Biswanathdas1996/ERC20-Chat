@@ -8,7 +8,6 @@ import swal from "@sweetalert/with-react";
 import { actionItems } from "./actions";
 
 const unKnownSwal = (shortScore) => {
-  console.log("---shortScore", shortScore);
   return swal(
     <div>
       <h5>Are you lookig for</h5>
