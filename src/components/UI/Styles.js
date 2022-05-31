@@ -48,6 +48,6 @@ export const EditorCont = styled.div`
     ${font.regular}
   }
   .ql-editor {
-    min-height: 110px;
+    min-height: 150px;
   }
 `;
