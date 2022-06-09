@@ -270,6 +270,12 @@ const Mint = () => {
                             </div>
 
                             <div className="form-group">
+                              <label
+                                htmlFor="date"
+                                style={{ display: "block" }}
+                              >
+                                Property
+                              </label>
                               <FieldArray
                                 name="attributes"
                                 render={(arrayHelpers) => (
@@ -356,6 +362,12 @@ const Mint = () => {
                               />
                             </div>
                             <div className="form-group">
+                              <label
+                                htmlFor="date"
+                                style={{ display: "block" }}
+                              >
+                                Special Property
+                              </label>
                               <FieldArray
                                 name="metainfo"
                                 render={(arrayHelper) => (
@@ -417,7 +429,7 @@ const Mint = () => {
                                           <Field
                                             name={`metainfo.${index}.trait_type`}
                                             autoComplete="flase"
-                                            placeholder="Enter trait_type"
+                                            placeholder="Enter title"
                                             className={`form-control text-muted`}
                                             style={{
                                               marginTop: 10,

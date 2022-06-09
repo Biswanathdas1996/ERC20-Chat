@@ -26,6 +26,7 @@ import Button from "@mui/material/Button";
 import Slider from "@mui/material/Slider";
 import OfflineBoltIcon from "@mui/icons-material/OfflineBolt";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import PercentIcon from "@mui/icons-material/Percent";
 
 const web3 = new Web3(window.ethereum);
 
@@ -93,10 +94,6 @@ const Timeline = () => {
     setResponse(null);
   };
 
-  // const propertyUI = (display_type)=>{
-  //   switch()
-  // }
-
   return (
     <>
       {start && <TransctionModal response={response} modalClose={modalClose} />}
@@ -107,7 +104,7 @@ const Timeline = () => {
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         style={{ padding: 20, background: "#f3f3f4" }}
       >
-        <Grid item xs={12} sm={12} md={6} lg={6}>
+        <Grid item xs={12} sm={12} md={4} lg={4}>
           <Card>
             <CardActionArea>
               <center>
@@ -132,8 +129,8 @@ const Timeline = () => {
                   </b>
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  <b style={{ color: "#7c007c" }}>
-                    Current Owner:{" "}
+                  <b style={{ color: "#7c007c", display: "flex" }}>
+                    <>Current Owner : </>
                     <Typography
                       variant="body2"
                       sx={{
@@ -157,9 +154,7 @@ const Timeline = () => {
               </CardContent>
             </CardActionArea>
           </Card>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={6}>
-          <Card style={{ padding: 20 }}>
+          <Card style={{ padding: 20, marginTop: 20 }}>
             <Formik
               initialValues={{
                 price: "",
@@ -204,54 +199,9 @@ const Timeline = () => {
               )}
             </Formik>
           </Card>
-          <Card style={{ padding: 20, marginTop: 20 }}>
-            <Formik
-              initialValues={{
-                sendTo: "",
-              }}
-              validationSchema={VendorSchema}
-              onSubmit={(values, { setSubmitting }) => {
-                saveData(values);
-                setSubmitting(false);
-              }}
-            >
-              {({ touched, errors, isSubmitting }) => (
-                <Form>
-                  <h4>Transfer </h4>
-                  <div
-                    className="form-group"
-                    style={{ marginLeft: 10, marginTop: 10 }}
-                  >
-                    <Field
-                      type="text"
-                      name="sendTo"
-                      autoComplete="flase"
-                      placeholder="Enter reciever address"
-                      className={`form-control text-muted ${
-                        touched?.sendTo && errors?.sendTo ? "is-invalid" : ""
-                      }`}
-                      style={{ marginRight: 10, padding: 9 }}
-                      disabled={account !== owner}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <span className="input-group-btn">
-                      <input
-                        className="btn btn-default btn-primary"
-                        type="submit"
-                        value={"Transfer"}
-                        disabled={account !== owner}
-                      />
-                    </span>
-                  </div>
-                </Form>
-              )}
-            </Formik>
-            <small>*Only token owner can transfer</small>
-          </Card>
-
-          <TableContainer component={Paper} style={{ marginTop: 20 }}>
+        </Grid>
+        <Grid item xs={12} sm={12} md={8} lg={8}>
+          <TableContainer component={Paper}>
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -271,7 +221,13 @@ const Timeline = () => {
                         }}
                       >
                         <TableCell component="th" scope="row">
-                          {row?.trait_type}
+                          <Button
+                            variant="outlined"
+                            color="success"
+                            startIcon={<PercentIcon />}
+                          >
+                            {row?.trait_type}
+                          </Button>
                         </TableCell>
                         <TableCell align="left" style={{ paddingRight: 20 }}>
                           <Slider
@@ -355,6 +311,53 @@ const Timeline = () => {
               </TableBody>
             </Table>
           </TableContainer>
+
+          <Card style={{ padding: 20, marginTop: 20 }}>
+            <Formik
+              initialValues={{
+                sendTo: "",
+              }}
+              validationSchema={VendorSchema}
+              onSubmit={(values, { setSubmitting }) => {
+                saveData(values);
+                setSubmitting(false);
+              }}
+            >
+              {({ touched, errors, isSubmitting }) => (
+                <Form>
+                  <h4>Transfer </h4>
+                  <div
+                    className="form-group"
+                    style={{ marginLeft: 10, marginTop: 10 }}
+                  >
+                    <Field
+                      type="text"
+                      name="sendTo"
+                      autoComplete="flase"
+                      placeholder="Enter reciever address"
+                      className={`form-control text-muted ${
+                        touched?.sendTo && errors?.sendTo ? "is-invalid" : ""
+                      }`}
+                      style={{ marginRight: 10, padding: 9 }}
+                      disabled={account !== owner}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <span className="input-group-btn">
+                      <input
+                        className="btn btn-default btn-primary"
+                        type="submit"
+                        value={"Transfer"}
+                        disabled={account !== owner}
+                      />
+                    </span>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+            <small>*Only token owner can transfer</small>
+          </Card>
         </Grid>
       </Grid>
     </>
