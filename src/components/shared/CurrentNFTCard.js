@@ -82,7 +82,7 @@ export default function RecipeReviewCard({ data, fetchAllPosts }) {
             }
             action={
               <a
-                href={`https://testnets.opensea.io/assets/${Address}/${data}/?force_update=true`}
+                href={`https://testnets.opensea.io/assets/${Address}/${data}?force_update=true`}
                 target="_blank"
                 rel="noreferrer"
                 title="View on OpenSea"

@@ -27,7 +27,14 @@ const Mint = () => {
   const [preview, setPreview] = useState();
   let history = useNavigate();
 
-  const saveData = async ({ name, text, attributes, price, royelty }) => {
+  const saveData = async ({
+    name,
+    text,
+    attributes,
+    metainfo,
+    price,
+    royelty,
+  }) => {
     const reSizedFile = await getResizedFile(file);
 
     setStart(true);
@@ -35,13 +42,14 @@ const Mint = () => {
     if (file) {
       const results = await uploadFileToIpfs(reSizedFile);
       console.log("--img fingerpring-->", results.path);
-
+      const nftAttributes = [...attributes, ...metainfo];
       const metaData = {
         name: name,
         image: getIpfsUrI(results.path),
         description: text,
-        attributes: attributes,
-        background_color: "000000b3",
+        attributes: nftAttributes,
+        seller_fee_basis_points: 100,
+        fee_recipient: "0xA97F337c39cccE66adfeCB2BF99C1DdC54C2D721",
       };
 
       const resultsSaveMetaData = await uploadFileToIpfs(
@@ -108,6 +116,13 @@ const Mint = () => {
                           price: "",
                           attributes: [
                             {
+                              trait_type: "",
+                              value: "",
+                            },
+                          ],
+                          metainfo: [
+                            {
+                              display_type: "",
                               trait_type: "",
                               value: "",
                             },
@@ -283,6 +298,118 @@ const Mint = () => {
                                         className="btn btn-default btn-success"
                                         onClick={() =>
                                           arrayHelpers.insert(
+                                            values.attributes.length + 1,
+                                            ""
+                                          )
+                                        }
+                                        style={{
+                                          marginTop: 10,
+                                        }}
+                                      >
+                                        + Add
+                                      </button>
+                                    )}
+                                  </div>
+                                )}
+                              />
+                            </div>
+                            <div className="form-group">
+                              <FieldArray
+                                name="metainfo"
+                                render={(arrayHelper) => (
+                                  <div>
+                                    {values.metainfo &&
+                                    values.metainfo.length > 0 ? (
+                                      values.metainfo.map((attribut, index) => (
+                                        <div
+                                          style={{
+                                            border: "1px solid #c7c9cc",
+                                            borderRadius: 5,
+                                            padding: 12,
+                                            marginTop: 15,
+                                          }}
+                                          key={index}
+                                        >
+                                          <button
+                                            type="button"
+                                            className="btn btn-default btn-danger"
+                                            onClick={() =>
+                                              arrayHelper.remove(index)
+                                            }
+                                            style={{
+                                              marginBottom: 10,
+                                              float: "right",
+                                            }}
+                                          >
+                                            Remove
+                                          </button>
+
+                                          <Field
+                                            name={`metainfo.${index}.display_type`}
+                                            autoComplete="flase"
+                                            placeholder="display_type"
+                                            className={`form-control text-muted `}
+                                            style={{
+                                              marginTop: 10,
+                                              padding: 9,
+                                            }}
+                                            as="select"
+                                          >
+                                            <option value="boost_number">
+                                              Boost Number
+                                            </option>
+
+                                            <option value="boost_percentage">
+                                              Boost Percentage
+                                            </option>
+
+                                            <option value="number">
+                                              Number
+                                            </option>
+                                            <option value="date">
+                                              Date (Value must be a unix
+                                              timestamp (seconds))
+                                            </option>
+                                          </Field>
+
+                                          <Field
+                                            name={`metainfo.${index}.trait_type`}
+                                            autoComplete="flase"
+                                            placeholder="Enter trait_type"
+                                            className={`form-control text-muted`}
+                                            style={{
+                                              marginTop: 10,
+                                              padding: 9,
+                                            }}
+                                          />
+                                          <Field
+                                            name={`metainfo.${index}.value`}
+                                            autoComplete="flase"
+                                            placeholder="Enter value"
+                                            className={`form-control text-muted`}
+                                            style={{
+                                              marginTop: 10,
+                                              padding: 9,
+                                            }}
+                                          />
+                                        </div>
+                                      ))
+                                    ) : (
+                                      <button
+                                        type="button"
+                                        className="btn btn-default btn-primary"
+                                        onClick={() => arrayHelper.push("")}
+                                      >
+                                        {/* show this when user has removed all attributes from the list */}
+                                        Add attributes
+                                      </button>
+                                    )}
+                                    {values.attributes.length !== 0 && (
+                                      <button
+                                        type="button"
+                                        className="btn btn-default btn-success"
+                                        onClick={() =>
+                                          arrayHelper.insert(
                                             values.attributes.length + 1,
                                             ""
                                           )
