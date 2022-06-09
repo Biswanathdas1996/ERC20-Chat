@@ -82,7 +82,7 @@ export default function RecipeReviewCard({ data, fetchAllPosts }) {
             }
             action={
               <a
-                href={`https://testnets.opensea.io/assets/${Address}/${data}`}
+                href={`https://testnets.opensea.io/assets/${Address}/${data}/?force_update=true`}
                 target="_blank"
                 rel="noreferrer"
                 title="View on OpenSea"
@@ -100,24 +100,31 @@ export default function RecipeReviewCard({ data, fetchAllPosts }) {
             component="img"
             image={nftData?.image}
             alt="Paella dish"
-            height="300"
-            weidth="300"
+            height="200"
+            weidth="200"
           />
 
           <CardContent>
             <Typography variant="body2" color="text.secondary">
-              <h3 style={{ marginTop: 15 }}>
-                {price / 1000000000000000000} ETH
-              </h3>
+              <h5>{price / 1000000000000000000} ETH</h5>
             </Typography>
             <Typography variant="body2" color="text.secondary">
               <h5 style={{ fontSize: 10 }}>
                 <b>Owner: </b>
-                {owner}
+                <Typography
+                  variant="body2"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    width: "11rem",
+                  }}
+                >
+                  {owner}
+                </Typography>
               </h5>
             </Typography>
           </CardContent>
-          <CardActions style={{ padding: 20 }} disableSpacing>
+          <CardActions style={{ padding: 10 }} disableSpacing>
             <Link to={`/nft-details/${data}`}>
               <Button
                 variant="contained"
@@ -132,7 +139,7 @@ export default function RecipeReviewCard({ data, fetchAllPosts }) {
             {owner !== account && (
               <Button
                 variant="contained"
-                style={{ marginRight: 10 }}
+                style={{ marginRight: 10, padding: "5px !important" }}
                 color="success"
                 onClick={() => buynow()}
                 className="btn btn-default btn-primary"

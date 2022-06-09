@@ -4,13 +4,13 @@ import * as Yup from "yup";
 import { Card, Grid } from "@mui/material";
 import { _transction } from "../../ABI-connect/NFT-ABI/connect";
 import TransctionModal from "../shared/TransctionModal";
-import { create } from "ipfs-http-client";
+
 import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
+import { getResizedFile } from "../../util/resizeImage";
+import { uploadFileToIpfs, getIpfsUrI } from "../../util/ipfs";
 
 const web3 = new Web3(window.ethereum);
-
-const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const VendorSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -28,26 +28,30 @@ const Mint = () => {
   let history = useNavigate();
 
   const saveData = async ({ name, text, attributes, price, royelty }) => {
+    const reSizedFile = await getResizedFile(file);
+
     setStart(true);
     let responseData;
     if (file) {
-      const results = await await client.add(file);
+      const results = await uploadFileToIpfs(reSizedFile);
       console.log("--img fingerpring-->", results.path);
+
       const metaData = {
         name: name,
-        image: `https://ipfs.infura.io/ipfs/${results.path}`,
+        image: getIpfsUrI(results.path),
         description: text,
         attributes: attributes,
+        background_color: "000000b3",
       };
 
-      const resultsSaveMetaData = await await client.add(
+      const resultsSaveMetaData = await uploadFileToIpfs(
         JSON.stringify(metaData)
       );
       console.log("---metadta-->", resultsSaveMetaData.path);
 
       responseData = await _transction(
         "mintNFT",
-        `https://ipfs.infura.io/ipfs/${resultsSaveMetaData.path}`,
+        getIpfsUrI(resultsSaveMetaData.path),
         web3.utils.toWei(price.toString(), "ether"),
         royelty
       );

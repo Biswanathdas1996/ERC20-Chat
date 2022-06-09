@@ -33,7 +33,7 @@ const NftMarket = () => {
           {token?.length !== 0 ? (
             token?.map((data, index) => {
               return (
-                <Grid item xs={12} sm={12} md={3} lg={3} key={index + "_nft"}>
+                <Grid item xs={12} sm={12} md={2} lg={2} key={index + "_nft"}>
                   <CurrentNFTCard data={data} fetchAllPosts={fetchAllPosts} />
                 </Grid>
               );

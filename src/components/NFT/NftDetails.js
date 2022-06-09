@@ -98,7 +98,7 @@ const Timeline = () => {
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         style={{ padding: 20, background: "#f3f3f4" }}
       >
-        <Grid item xs={12} md={12} lg={12}>
+        <Grid item xs={12} sm={12} md={6} lg={6}>
           <Card>
             <CardActionArea>
               <center>
@@ -125,7 +125,16 @@ const Timeline = () => {
                 <Typography variant="body2" color="text.secondary">
                   <b style={{ color: "#7c007c" }}>
                     Current Owner:{" "}
-                    {account === owner ? "You own this token" : owner}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        width: "11rem",
+                      }}
+                    >
+                      {account === owner ? "You own this token" : owner}
+                    </Typography>
                   </b>
                 </Typography>
 
@@ -140,34 +149,7 @@ const Timeline = () => {
             </CardActionArea>
           </Card>
         </Grid>
-        <Grid item xs={12} md={6} lg={6} style={{ marginTop: 20 }}>
-          <TableContainer component={Paper}>
-            <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Properties</TableCell>
-                  <TableCell align="right">Value</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {nftData?.attributes?.map((row) => (
-                  <TableRow
-                    key={row.trait_type}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                    }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.trait_type}
-                    </TableCell>
-                    <TableCell align="right">{row.value}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Grid>
-        <Grid item xs={12} md={6} lg={6} style={{ marginTop: 20 }}>
+        <Grid item xs={12} sm={12} md={6} lg={6}>
           <Card style={{ padding: 20 }}>
             <Formik
               initialValues={{
@@ -259,6 +241,33 @@ const Timeline = () => {
             </Formik>
             <small>*Only token owner can transfer</small>
           </Card>
+        </Grid>
+        <Grid item xs={12} sm={12} md={6} lg={6} style={{ marginTop: 20 }}>
+          <TableContainer component={Paper}>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Properties</TableCell>
+                  <TableCell align="right">Value</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {nftData?.attributes?.map((row) => (
+                  <TableRow
+                    key={row.trait_type}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.trait_type}
+                    </TableCell>
+                    <TableCell align="right">{row.value}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Grid>
       </Grid>
     </>

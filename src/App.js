@@ -16,6 +16,7 @@ import Users from "./components/Encrtption/Users";
 import ABIDocumentation from "./pages/ABIDocumentation";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import DigitalKYC from "./pages/DigitalKYC";
 import { _fetch, _account } from "./ABI-connect/MessangerABI/connect";
 
 export const AccountContest = React.createContext("light");
@@ -68,6 +69,7 @@ const App = () => {
                 <Route path="/encrypt/users" element={<Users />} />
 
                 <Route path="/doc" element={<ABIDocumentation />} />
+                <Route path="/kyc" element={<DigitalKYC />} />
               </Routes>
             );
           }}
