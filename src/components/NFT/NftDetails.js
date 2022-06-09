@@ -22,6 +22,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Web3 from "web3";
+import Button from "@mui/material/Button";
+import Slider from "@mui/material/Slider";
+import OfflineBoltIcon from "@mui/icons-material/OfflineBolt";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 const web3 = new Web3(window.ethereum);
 
@@ -88,6 +92,11 @@ const Timeline = () => {
     setStart(false);
     setResponse(null);
   };
+
+  // const propertyUI = (display_type)=>{
+  //   switch()
+  // }
+
   return (
     <>
       {start && <TransctionModal response={response} modalClose={modalClose} />}
@@ -251,19 +260,98 @@ const Timeline = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {nftData?.attributes?.map((row) => (
-                  <TableRow
-                    key={row?.trait_type}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                    }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row?.trait_type}
-                    </TableCell>
-                    <TableCell align="right">{row?.value}</TableCell>
-                  </TableRow>
-                ))}
+                {nftData?.attributes?.map((row, key) => {
+                  console.log("---->", row);
+                  if (row?.display_type === "boost_percentage") {
+                    return (
+                      <TableRow
+                        key={row?.trait_type + key}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {row?.trait_type}
+                        </TableCell>
+                        <TableCell align="left" style={{ paddingRight: 20 }}>
+                          <Slider
+                            aria-label="Always visible"
+                            defaultValue={Number(row?.value)}
+                            step={10}
+                            valueLabelDisplay="on"
+                            marks={[
+                              {
+                                value: 0,
+                                label: "0%",
+                              },
+                              {
+                                value: 100,
+                                label: "100%",
+                              },
+                            ]}
+                            disabled
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  } else if (row?.display_type === "boost_number") {
+                    return (
+                      <TableRow
+                        key={row?.trait_type + key}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          <Button
+                            variant="contained"
+                            startIcon={<OfflineBoltIcon />}
+                          >
+                            {row?.trait_type}
+                          </Button>
+                        </TableCell>
+                        <TableCell align="right">{row?.value}</TableCell>
+                      </TableRow>
+                    );
+                  } else if (row?.display_type === "date") {
+                    return (
+                      <TableRow
+                        key={row?.trait_type + key}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          <Button
+                            variant="outlined"
+                            startIcon={<CalendarMonthIcon />}
+                          >
+                            {row?.trait_type}
+                          </Button>
+                        </TableCell>
+                        <TableCell align="right">
+                          {new Date(Number(row?.value)).toLocaleDateString(
+                            "en-US"
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  } else {
+                    return (
+                      <TableRow
+                        key={row?.trait_type + key}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {row?.trait_type}
+                        </TableCell>
+                        <TableCell align="right">{row?.value}</TableCell>
+                      </TableRow>
+                    );
+                  }
+                })}
               </TableBody>
             </Table>
           </TableContainer>
