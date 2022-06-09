@@ -30,19 +30,32 @@ const Mint = () => {
   const saveData = async ({
     name,
     text,
+    date,
     attributes,
     metainfo,
     price,
     royelty,
   }) => {
-    const reSizedFile = await getResizedFile(file);
-
     setStart(true);
+    const reSizedFile = await getResizedFile(file);
     let responseData;
     if (file) {
       const results = await uploadFileToIpfs(reSizedFile);
       console.log("--img fingerpring-->", results.path);
-      const nftAttributes = [...attributes, ...metainfo];
+
+      let dateArr = {};
+      if (date) {
+        dateArr = [
+          {
+            display_type: "date",
+            trait_type: "Publish Date",
+            value: Date.parse(date),
+          },
+        ];
+      }
+
+      const nftAttributes = [...attributes, ...metainfo, ...dateArr];
+
       const metaData = {
         name: name,
         image: getIpfsUrI(results.path),
@@ -114,6 +127,7 @@ const Mint = () => {
                           text: "",
                           royelty: "",
                           price: "",
+                          date: "",
                           attributes: [
                             {
                               trait_type: "",
@@ -130,7 +144,6 @@ const Mint = () => {
                         }}
                         validationSchema={VendorSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                          console.log("values=======>", values);
                           saveData(values);
                           setSubmitting(false);
                         }}
@@ -175,6 +188,29 @@ const Mint = () => {
                               className="form-group"
                               style={{ marginLeft: 10, marginTop: 10 }}
                             >
+                              <label
+                                htmlFor="date"
+                                style={{ display: "block" }}
+                              >
+                                Publish Date
+                              </label>
+                              <Field
+                                type="date"
+                                name="date"
+                                autoComplete="flase"
+                                placeholder="Enter date"
+                                className={`form-control text-muted ${
+                                  touched.date && errors.date
+                                    ? "is-invalid"
+                                    : ""
+                                }`}
+                                style={{ marginRight: 10, padding: 9 }}
+                              />
+                            </div>
+                            <div
+                              className="form-group"
+                              style={{ marginLeft: 10, marginTop: 10 }}
+                            >
                               <Field
                                 type="number"
                                 name="price"
@@ -208,6 +244,12 @@ const Mint = () => {
                             <div className="form-group">
                               <span className="input-group-btn">
                                 <div style={{ marginLeft: 10, marginTop: 10 }}>
+                                  <label
+                                    htmlFor="date"
+                                    style={{ display: "block" }}
+                                  >
+                                    Choose File
+                                  </label>
                                   <input type="file" onChange={onFileChange} />
                                 </div>
 

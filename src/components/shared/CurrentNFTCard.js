@@ -17,6 +17,8 @@ import Address from "../../ABI-connect/NFT-ABI/Address.json";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import TransctionModal from "./TransctionModal";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 
 export default function RecipeReviewCard({ data, fetchAllPosts }) {
   const [nftData, setNftData] = useState(null);
@@ -152,6 +154,12 @@ export default function RecipeReviewCard({ data, fetchAllPosts }) {
       </>
     );
   } else {
-    return <></>;
+    return (
+      <Stack spacing={1}>
+        <Skeleton variant="text" height={30} />
+        <Skeleton variant="rectangular" height={60} />
+        <Skeleton variant="rectangular" height={120} />
+      </Stack>
+    );
   }
 }

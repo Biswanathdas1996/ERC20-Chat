@@ -219,7 +219,7 @@ const Timeline = () => {
                       autoComplete="flase"
                       placeholder="Enter reciever address"
                       className={`form-control text-muted ${
-                        touched.sendTo && errors.sendTo ? "is-invalid" : ""
+                        touched?.sendTo && errors?.sendTo ? "is-invalid" : ""
                       }`}
                       style={{ marginRight: 10, padding: 9 }}
                       disabled={account !== owner}
@@ -241,9 +241,8 @@ const Timeline = () => {
             </Formik>
             <small>*Only token owner can transfer</small>
           </Card>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={6} style={{ marginTop: 20 }}>
-          <TableContainer component={Paper}>
+
+          <TableContainer component={Paper} style={{ marginTop: 20 }}>
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -254,15 +253,15 @@ const Timeline = () => {
               <TableBody>
                 {nftData?.attributes?.map((row) => (
                   <TableRow
-                    key={row.trait_type}
+                    key={row?.trait_type}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                     }}
                   >
                     <TableCell component="th" scope="row">
-                      {row.trait_type}
+                      {row?.trait_type}
                     </TableCell>
-                    <TableCell align="right">{row.value}</TableCell>
+                    <TableCell align="right">{row?.value}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
